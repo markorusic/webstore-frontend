@@ -45,3 +45,16 @@ export interface ProductPageDto {
   photo: string
   categoryId: string
 }
+
+export interface ProductDto {
+  id: string
+  name: string
+  price: number
+  photo: string
+  photos: {
+    id: string
+    path: string
+  }[]
+  description: string
+  category: CategoryDto
+}

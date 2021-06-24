@@ -6,6 +6,7 @@ import { Home } from './pages'
 import { Categories } from './pages/categories'
 import { Login } from './pages/login'
 import { Products } from './pages/products'
+import { Product } from './pages/products/[id]'
 import { Register } from './pages/register'
 
 function App() {
@@ -16,8 +17,11 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/products">
+          <Route exact path="/products">
             <Products />
+          </Route>
+          <Route path="/products/:id">
+            <Product />
           </Route>
           <Route path="/categories">
             <Categories />

@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Row } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import { ProductPageDto } from '../../types/dto'
@@ -12,12 +13,14 @@ export interface ProductListItemProps {
 
 export const ProductListItem: FC<ProductListItemProps> = ({ product }) => {
   return (
-    <ImageCard src={product.photo}>
-      <Meta
-        title={product.name}
-        description={`${locale.price}: ${product.price}$`}
-      />
-    </ImageCard>
+    <Link to={`/products/${product.id}`}>
+      <ImageCard src={product.photo}>
+        <Meta
+          title={product.name}
+          description={`${locale.price}: ${product.price}$`}
+        />
+      </ImageCard>
+    </Link>
   )
 }
 

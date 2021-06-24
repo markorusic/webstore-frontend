@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Row } from 'antd'
+import Meta from 'antd/lib/card/Meta'
 import { CategoryDto } from '../../types/dto'
 import { BaseList, BaseListProps } from '../shared/base-list'
 import { ImageCard } from '../shared/image-card'
-import Meta from 'antd/lib/card/Meta'
 
 export interface CategoryListItemProps {
   category: CategoryDto
