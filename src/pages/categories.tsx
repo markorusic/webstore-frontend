@@ -1,4 +1,4 @@
-import { CategoryList } from '../components/customer/cateogry-list'
+import { CategoryList } from '../components/customer/category-list'
 import { PageContainer } from '../components/customer/page-container'
 import { locale } from '../localization'
 import { useCategories } from '../services/category-service'

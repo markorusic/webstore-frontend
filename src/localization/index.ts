@@ -5,6 +5,8 @@ export const locale = {
   selectCategory: 'Select category',
   searchForCategory: 'Search for category',
   selectSort: 'Select sort',
+  featuredCategories: 'Featured Categories',
+  featuredProducts: 'Featured Products',
   showMore: 'Show More',
   price: 'Price',
   error: 'Error',

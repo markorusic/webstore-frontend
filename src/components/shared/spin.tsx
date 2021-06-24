@@ -9,5 +9,5 @@ interface Props extends React.ComponentProps<typeof BaseSpin> {
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 export const Spin: React.FC<Props> = props => (
-  <BaseSpin indicator={antIcon} {...props} />
+  <BaseSpin indicator={antIcon} {...props} delay={300} />
 )

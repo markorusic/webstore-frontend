@@ -29,7 +29,7 @@ export const PageContainer: FC = ({ children }) => {
   const location = useLocation()
 
   return (
-    <div className="p-24">
+    <div className="page-content-container">
       <Menu selectedKeys={[location.pathname]} mode="horizontal">
         {baseItems.map(item => (
           <Menu.Item key={item.path}>
@@ -47,7 +47,7 @@ export const PageContainer: FC = ({ children }) => {
         ))}
       </Menu>
 
-      <div>{children}</div>
+      <div className="py-16">{children}</div>
     </div>
   )
 }

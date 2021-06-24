@@ -1,5 +1,29 @@
 @import 'antd/dist/antd.css';
 
+/* Component specific */
+.page-content-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.image-card-bg-container {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  display: block;
+  padding-bottom: 100%;
+  position: relative;
+  cursor: pointer;
+}
+.image-card-title {
+  color: black;
+}
+.image-card-description {
+  color: gray;
+}
+
+/* Utils */
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -20,4 +44,7 @@
 
 .py-16 {
   padding: 16px 0;
+}
+.py-8 {
+  padding: 8px 0;
 }

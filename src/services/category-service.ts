@@ -12,7 +12,9 @@ export const categoryService = {
       content: data.content.map(category => ({
         ...category,
         photo:
-          'https://www.pennlive.com/resizer/pNQnx95zZgnQ7WxBKyOz60xbHFY=/450x0/smart/cloudfront-us-east-1.images.arcpublishing.com/advancelocal/XS7ICOMD5JFCXISBUIDUDNL5OQ.jpg'
+          Math.random() > 0.5
+            ? 'http://vuzz-backend.novafabrika.rs/upload/content/images/1608207957973-870264a5-2aa1-4418-8947-ca89164ad809.jpg'
+            : 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Poster-sized_portrait_of_Barack_Obama.jpg'
       }))
     } as Page<CategoryDto>
   }
