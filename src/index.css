@@ -18,6 +18,6 @@
   padding: 24px;
 }
 
-.pt-16 {
-  padding-top: 16px;
+.py-16 {
+  padding: 16px 0;
 }

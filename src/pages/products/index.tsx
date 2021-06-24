@@ -1,5 +1,5 @@
-import { Col, Row } from 'antd'
 import React from 'react'
+import { Col, Pagination, Row } from 'antd'
 import { PageContainer } from '../../components/customer/page-container'
 import { ProductList } from '../../components/customer/product-list'
 import { BaseList } from '../../components/shared/base-list'
@@ -10,15 +10,16 @@ import {
   ProductFetchParams,
   useProductPage
 } from '../../services/products-service'
+import { paginationAdapter } from '../../utils/pagination-adapter'
 import { useURLQuery } from '../../utils/use-url-query'
 
 export const Products = () => {
-  const { params, setParam } = useURLQuery<ProductFetchParams>()
+  const urlQuery = useURLQuery<ProductFetchParams>()
   const categoriesQuery = useCategories()
   const productsPageQuery = useProductPage({
     page: 0,
     size: 12,
-    ...params
+    ...urlQuery.params
   })
 
   return (
@@ -35,14 +36,17 @@ export const Products = () => {
                 id="category-select"
                 label={locale.selectCategory}
                 placeholder={locale.searchForCategory}
-                defaultValue={params.categoryId?.toString()}
+                defaultValue={urlQuery.params.categoryId?.toString()}
+                onChange={categoryId =>
+                  urlQuery.setParams({
+                    categoryId,
+                    page: 0
+                  })
+                }
                 items={categories.map(category => ({
                   title: category.name,
                   value: category.id
                 }))}
-                onChange={cateogryId => {
-                  setParam('categoryId', cateogryId)
-                }}
               />
             )}
           />
@@ -53,26 +57,33 @@ export const Products = () => {
             id="sort-select"
             label={locale.selectSort}
             placeholder={locale.selectSort}
-            defaultValue={params.sort}
+            defaultValue={urlQuery.params.sort}
+            onChange={value => urlQuery.setParam('sort', value)}
             items={[
-              { title: 'Price desc', value: 'price,desc' },
-              { title: 'Price asc', value: 'price,asc' },
-              { title: 'Name desc', value: 'name,desc' },
-              { title: 'Name asc', value: 'name,asc' }
+              { title: 'Price Descending ', value: 'price,desc' },
+              { title: 'Price Ascending ', value: 'price,asc' },
+              { title: 'Name Descending ', value: 'name,desc' },
+              { title: 'Name Ascending ', value: 'name,asc' }
             ]}
-            onChange={sort => {
-              setParam('sort', sort)
-            }}
           />
         </Col>
       </Row>
 
-      <div className="pt-16">
+      <div className="py-16">
         <ProductList
-          data={productsPageQuery.data?.pages[params.page || 0]?.content}
+          data={productsPageQuery.data?.content}
           status={productsPageQuery.status}
         />
       </div>
+
+      <Pagination
+        {...paginationAdapter({
+          pageSize: urlQuery.params.size,
+          current: urlQuery.params.page,
+          total: productsPageQuery.data?.totalElements,
+          onChange: page => urlQuery.setParam('page', page)
+        })}
+      />
     </PageContainer>
   )
 }

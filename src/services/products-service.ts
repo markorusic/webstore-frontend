@@ -1,8 +1,4 @@
-import {
-  QueryKey,
-  useInfiniteQuery,
-  UseInfiniteQueryOptions
-} from 'react-query'
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { Page, PageParams, ProductPageDto } from '../types/dto'
 import { http } from '../utils/http'
 
@@ -34,20 +30,12 @@ export const productQueryKeys = {
 
 export const useProductPage = (
   params: ProductFetchParams,
-  options?: UseInfiniteQueryOptions<Page<ProductPageDto>>
+  options?: UseQueryOptions<Page<ProductPageDto>>
 ) => {
   const key: QueryKey = [productQueryKeys.products, ...Object.values(params)]
-  const query = useInfiniteQuery(
-    key,
-    ({ pageParam = 0 }) =>
-      productService.fetchPage({ ...params, page: pageParam }),
-    {
-      getNextPageParam: lastPage =>
-        lastPage.last ? undefined : lastPage.pageable.pageNumber + 1,
-      keepPreviousData: true,
-      ...options
-    }
-  )
-
+  const query = useQuery(key, () => productService.fetchPage({ ...params }), {
+    keepPreviousData: true,
+    ...options
+  })
   return query
 }

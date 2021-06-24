@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Select, SelectProps } from 'antd'
 
-export interface SimpleSelectProps extends SelectProps<any> {
+export interface SimpleSelectProps extends Omit<SelectProps<any>, 'onChange'> {
   items:
     | {
         title: string
@@ -9,18 +9,25 @@ export interface SimpleSelectProps extends SelectProps<any> {
       }[]
     | undefined
   label?: string
+  onChange(value: string): void
 }
 
 export const SimpleSelect: FC<SimpleSelectProps> = ({
   items,
   label,
+  defaultValue,
   ...props
 }) => {
   return (
     <div>
       {label && (
         <div>
-          <label className="cursor-pointer" htmlFor={props.id}>
+          <label
+            className="cursor-pointer"
+            // @ts-ignore
+            style={{ fontSize: '16px', fontWeight: '500' }}
+            htmlFor={props.id}
+          >
             {label}
           </label>
         </div>
@@ -28,12 +35,18 @@ export const SimpleSelect: FC<SimpleSelectProps> = ({
       <Select
         showSearch
         allowClear
+        labelInValue
         style={{ width: 200 }}
         optionFilterProp="title"
+        defaultValue={defaultValue ? { value: defaultValue } : undefined}
         filterOption={(input, option) =>
           option?.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         {...props}
+        onChange={data => {
+          // @ts-ignore
+          props.onChange(data?.value.toString())
+        }}
       >
         {items?.map(item => (
           <Select.Option
