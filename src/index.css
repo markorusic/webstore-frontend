@@ -1,5 +1,9 @@
 @import 'antd/dist/antd.css';
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .space-between {
   display: flex;
   justify-content: space-between;
@@ -12,4 +16,8 @@
 
 .p-24 {
   padding: 24px;
+}
+
+.pt-16 {
+  padding-top: 16px;
 }

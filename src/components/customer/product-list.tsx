@@ -14,7 +14,7 @@ export const ProductListItem: FC<ProductListItemProps> = ({ product }) => {
     <Card hoverable cover={<img alt={product.name} src={product.photo} />}>
       <Meta
         title={product.name}
-        description={`${locale.commons.price}: ${product.price}$`}
+        description={`${locale.price}: ${product.price}$`}
       />
     </Card>
   )
@@ -32,7 +32,7 @@ export const ProductList: FC<ProductListProps> = props => {
       renderItems={products => (
         <Row gutter={[16, 16]}>
           {products.map(product => (
-            <Col key={product.id} xs={24} sm={12} md={6}>
+            <Col key={product.id} xs={24} sm={12} md={8} xl={4}>
               <ProductListItem product={product} />
             </Col>
           ))}

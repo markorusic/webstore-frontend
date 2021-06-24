@@ -10,7 +10,7 @@ export const Home = () => {
   })
   return (
     <PageContainer>
-      <h1>{locale.commons.home}</h1>
+      <h1>{locale.home}</h1>
 
       <CategoryList
         data={categoriesQuery.data}
@@ -18,7 +18,7 @@ export const Home = () => {
       />
 
       <div className="justify-end">
-        <Link to="/categories">{locale.commons.showMore}</Link>
+        <Link to="/categories">{locale.showMore}</Link>
       </div>
     </PageContainer>
   )

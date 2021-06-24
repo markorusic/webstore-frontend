@@ -20,8 +20,8 @@ export function BaseList<T>({
       {status === 'success' &&
         (data.length === 0 ? (
           <Alert
-            message={locale.commons.noData}
-            description={locale.commons.noDataForThatQuery}
+            message={locale.noData}
+            description={locale.noDataForThatQuery}
             type="warning"
             showIcon
           />
@@ -31,8 +31,8 @@ export function BaseList<T>({
 
       {status === 'error' && (
         <Alert
-          message={locale.commons.error}
-          description={locale.commons.loadingError}
+          message={locale.error}
+          description={locale.loadingError}
           type="error"
           showIcon
         />

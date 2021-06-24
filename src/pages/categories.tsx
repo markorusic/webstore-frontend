@@ -7,7 +7,7 @@ export const Categories = () => {
   const categoriesQuery = useCategories()
   return (
     <PageContainer>
-      <h1>{locale.commons.categories}</h1>
+      <h1>{locale.categories}</h1>
       <CategoryList
         data={categoriesQuery.data}
         status={categoriesQuery.status}
