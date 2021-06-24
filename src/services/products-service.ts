@@ -21,7 +21,8 @@ export const productService = {
       ...data,
       content: data.content.map(product => ({
         ...product,
-        photo: 'https://picsum.photos/200/300'
+        photo:
+          'https://paisano-online.com/wp-content/uploads/2020/02/File_001-900x733.jpg'
       }))
     } as Page<ProductPageDto>
   }
@@ -35,9 +36,9 @@ export const useProductPage = (
   params: ProductFetchParams,
   options?: UseInfiniteQueryOptions<Page<ProductPageDto>>
 ) => {
-  //   const key: QueryKey = [productQueryKeys.products, ...Object.values(params)]
+  const key: QueryKey = [productQueryKeys.products, ...Object.values(params)]
   const query = useInfiniteQuery(
-    productQueryKeys.products,
+    key,
     ({ pageParam = 0 }) =>
       productService.fetchPage({ ...params, page: pageParam }),
     {

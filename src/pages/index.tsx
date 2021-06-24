@@ -1,23 +1,20 @@
 import { Link } from 'react-router-dom'
-import { useQuery } from 'react-query'
-import { CateogryList } from '../components/customer/cateogry-list'
+import { CategoryList } from '../components/customer/cateogry-list'
 import { PageContainer } from '../components/customer/page-container'
 import { locale } from '../localization'
-import { categoryService } from '../services/category-service'
+import { useCategories } from '../services/category-service'
 
 export const Home = () => {
-  const categoriesQuery = useQuery('categories', () =>
-    categoryService.fetchPage({ size: 4 })
-  )
+  const categoriesQuery = useCategories({
+    select: data => data.slice(0, 4)
+  })
   return (
     <PageContainer>
       <h1>{locale.commons.home}</h1>
-      <CateogryList
-        categories={
-          categoriesQuery.status === 'success'
-            ? categoriesQuery.data.content
-            : []
-        }
+
+      <CategoryList
+        data={categoriesQuery.data}
+        status={categoriesQuery.status}
       />
 
       <div className="justify-end">

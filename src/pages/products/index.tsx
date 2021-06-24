@@ -1,44 +1,27 @@
-import { useParams } from 'react-router-dom'
 import { PageContainer } from '../../components/customer/page-container'
+import { ProductList } from '../../components/customer/product-list'
+import { locale } from '../../localization'
 import {
   ProductFetchParams,
-  productService,
   useProductPage
 } from '../../services/products-service'
-import { Page, ProductPageDto } from '../../types/dto'
-
-// interface Props {
-//   initialProductsPage: Page<ProductPageDto>
-// }
-
-// export const getServerSideProps: GetServerSideProps<Props> = async context => {
-//   const initialProductsPage = await productService.fetchPage(context.query)
-//   return {
-//     props: {
-//       initialProductsPage
-//     }
-//   }
-// }
+import { useURLQuery } from '../../utils/use-url-query'
 
 export const Products = () => {
-  const params = useParams()
-  // const params = router.query as ProductFetchParams
-  // const productsPageQuery = useProductPage(params, {
-  //   initialData: {
-  //     pageParams: [params],
-  //     pages: [initialProductsPage]
-  //   }
-  // })
-
-  // console.log({
-  //   params,
-  //   // productsPageQuery,
-  //   initialProductsPage
-  // })
+  const { params, setParam } = useURLQuery<ProductFetchParams>({
+    page: 0,
+    size: 10
+  })
+  const productsPageQuery = useProductPage(params)
 
   return (
     <PageContainer>
-      <div>Products</div>
+      <div>{locale.commons.products}</div>
+
+      <ProductList
+        data={productsPageQuery.data?.pages[params.page || 0]?.content}
+        status={productsPageQuery.status}
+      />
     </PageContainer>
   )
 }
