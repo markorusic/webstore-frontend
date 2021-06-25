@@ -44,7 +44,6 @@ export const Register = () => {
           customerService
             .register(values)
             .then(customer => {
-              actions.resetForm()
               notification.open({
                 type: 'success',
                 message: 'Successfully registered!',

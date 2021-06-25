@@ -1,27 +1,42 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import { useCustomer } from '../../services/customer-service'
 import { useCart } from '../../services/cart-service'
+import {
+  CheckCircleOutlined,
+  HomeOutlined,
+  LoginOutlined,
+  ShoppingCartOutlined,
+  ShoppingOutlined,
+  UnorderedListOutlined,
+  UserOutlined
+} from '@ant-design/icons'
+import { locale } from '../../localization'
 
 export interface NavLink {
   title: string
   path: string
+  icon?: ReactNode
 }
 
 const baseItems: NavLink[] = [
-  { title: 'Home', path: '/' },
-  { title: 'Categories', path: '/categories' },
-  { title: 'Products', path: '/products' }
+  { title: locale.home, path: '/', icon: <HomeOutlined /> },
+  {
+    title: locale.categories,
+    path: '/categories',
+    icon: <UnorderedListOutlined />
+  },
+  { title: locale.products, path: '/products', icon: <ShoppingOutlined /> }
 ]
 
 const authenticatedCustomerItems: NavLink[] = [
-  { title: 'Profile', path: '/profile' }
+  { title: locale.profile, path: '/profile', icon: <UserOutlined /> }
 ]
 
 const unauthenticatedCustomerItems: NavLink[] = [
-  { title: 'Login', path: '/login' },
-  { title: 'Register', path: '/register' }
+  { title: locale.login, path: '/login', icon: <LoginOutlined /> },
+  { title: locale.register, path: '/register', icon: <CheckCircleOutlined /> }
 ]
 
 export const PageContainer: FC = ({ children }) => {
@@ -31,26 +46,31 @@ export const PageContainer: FC = ({ children }) => {
 
   return (
     <div className="page-content-container">
-      <Menu selectedKeys={[location.pathname]} mode="horizontal">
-        {baseItems.map(item => (
-          <Menu.Item key={item.path}>
-            <Link to={item.path}>{item.title}</Link>
-          </Menu.Item>
-        ))}
+      <div className="customer-top-menu-container">
+        <Menu selectedKeys={[location.pathname]} mode="horizontal">
+          {baseItems.map(item => (
+            <Menu.Item key={item.path} icon={item.icon}>
+              <Link to={item.path}>{item.title}</Link>
+            </Menu.Item>
+          ))}
+        </Menu>
 
-        {(customer
-          ? authenticatedCustomerItems
-          : unauthenticatedCustomerItems
-        ).map(item => (
-          <Menu.Item key={item.path}>
-            <Link to={item.path}>{item.title}</Link>
+        <Menu selectedKeys={[location.pathname]} mode="horizontal">
+          {(customer
+            ? authenticatedCustomerItems
+            : unauthenticatedCustomerItems
+          ).map(item => (
+            <Menu.Item key={item.path} icon={item.icon}>
+              <Link to={item.path}>{item.title}</Link>
+            </Menu.Item>
+          ))}
+          <Menu.Item key="/cart" icon={<ShoppingCartOutlined />}>
+            <Link to="/cart">
+              {locale.cart} ({cart.totalItems})
+            </Link>
           </Menu.Item>
-        ))}
-
-        <Menu.Item key="/cart">
-          <Link to="/cart">Cart ({cart.totalItems})</Link>
-        </Menu.Item>
-      </Menu>
+        </Menu>
+      </div>
 
       <div className="py-16">{children}</div>
     </div>

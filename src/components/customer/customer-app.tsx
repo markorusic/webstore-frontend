@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
+import { withAuth, withUnauth } from './utils'
 import { Home } from '../../pages'
 import { Cart } from '../../pages/cart'
 import { Categories } from '../../pages/categories'
@@ -8,10 +9,10 @@ import { Products } from '../../pages/products'
 import { Product } from '../../pages/products/[id]'
 import { Profile } from '../../pages/profile'
 import { Register } from '../../pages/register'
-import {
-  AuthenticatedCustomerRoute,
-  UnauthenticatedCustomerRoute
-} from './customer-private-route'
+
+const AuthenticatedProfile = withAuth(Profile)
+const UnauthenticatedLogin = withUnauth(Login)
+const UnauthenticatedRegister = withUnauth(Register)
 
 export const CustomerApp = () => {
   return (
@@ -31,15 +32,15 @@ export const CustomerApp = () => {
       <Route path="/categories">
         <Categories />
       </Route>
-      <UnauthenticatedCustomerRoute path="/register">
-        <Register />
-      </UnauthenticatedCustomerRoute>
-      <UnauthenticatedCustomerRoute path="/login">
-        <Login />
-      </UnauthenticatedCustomerRoute>
-      <AuthenticatedCustomerRoute path="/profile">
-        <Profile />
-      </AuthenticatedCustomerRoute>
+      <Route path="/register">
+        <UnauthenticatedRegister />
+      </Route>
+      <Route path="/login">
+        <UnauthenticatedLogin />
+      </Route>
+      <Route path="/profile">
+        <AuthenticatedProfile />
+      </Route>
     </>
   )
 }

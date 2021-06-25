@@ -6,6 +6,16 @@
   margin: 0 auto;
 }
 
+.customer-top-menu-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.customer-top-menu-container .ant-menu-horizontal {
+  border: none !important;
+}
+
 .image-card-bg-container {
   background-repeat: no-repeat;
   background-position: center center;
