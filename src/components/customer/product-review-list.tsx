@@ -42,7 +42,7 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
                   </span>
                 ))}
                 <span className="px-8">
-                  {dayjs(review.updatedAt).format('MM/DD/YYYY')}
+                  {dayjs(review.updatedAt).format('MMMM D, YYYY h:mm A')}
                 </span>
               </div>
               <div>{review.content}</div>
