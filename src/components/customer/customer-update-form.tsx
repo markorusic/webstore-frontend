@@ -8,8 +8,7 @@ import { Form, TextInput, SubmitButton } from '../shared/form'
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required()
+  lastName: yup.string().required()
 })
 
 export const CustomerUpdateForm = () => {
@@ -37,7 +36,6 @@ export const CustomerUpdateForm = () => {
     >
       <TextInput label="First name" name="firstName" />
       <TextInput label="Last name" name="lastName" />
-      <TextInput label="Email" name="email" type="email" />
 
       <div className="py-8">
         <SubmitButton type="primary" icon={<SaveOutlined />}>

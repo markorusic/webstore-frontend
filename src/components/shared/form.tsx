@@ -85,7 +85,7 @@ export const TextInput: FC<TextInputProps> = ({
 }
 
 export type TextAreaProps = BaseInputProps & BaseTextAreaProps
-export const TextArea: FC<TextAreaProps> = ({
+export const TextAreaInput: FC<TextAreaProps> = ({
   containerClassName,
   ...props
 }) => {

@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
-import { ProductDto } from '../types/dto'
+import { OrderDto, OrderRequestDto, ProductDto } from '../types/dto'
+import { customerHttp } from './customer-service'
 import { productService } from './products-service'
 
 export const cartKeys = {
@@ -70,6 +71,18 @@ export const useCart = () => {
     })
   }
 
+  const checkout = async (
+    shippingInfo: Omit<OrderRequestDto, 'orderDetails'>
+  ) => {
+    const dto: OrderRequestDto = {
+      ...shippingInfo,
+      orderDetails: value.items
+    }
+    const order = await customerHttp.post<OrderDto>('/orders/save', dto)
+    setValue({ ...initalCart })
+    return order
+  }
+
   const totalItems = useMemo(() => {
     return value.items.reduce(
       (currentValue, currentItem) => currentValue + currentItem.quantity,
@@ -88,7 +101,7 @@ export const useCart = () => {
     localStorage.setItem(cartKeys.cart, JSON.stringify(value))
   }, [value])
 
-  return { value, setValue, add, remove, byProductId, totalItems }
+  return { value, setValue, add, remove, checkout, byProductId, totalItems }
 }
 
 export const useCartProducts = (options?: UseQueryOptions<ProductDto[]>) => {

@@ -97,3 +97,27 @@ export interface UserLogAction {
   actionType: string
   createdAt: string
 }
+
+export interface OrderRequestDto {
+  shippingAddress: string
+  note: string
+  orderDetails: {
+    quantity: number
+    productId: string
+  }[]
+}
+export interface OrderDto {
+  id: number
+  shippingAddress: string
+  note: string
+  status: string
+  customer: CustomerDto
+  orderDetails: {
+    id: number
+    name: string
+    price: number
+    photo: string
+    quantity: number
+    productId: number
+  }[]
+}

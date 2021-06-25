@@ -1,19 +1,19 @@
-import {
-  CheckOutlined,
-  CloseOutlined,
-  ShoppingOutlined
-} from '@ant-design/icons'
-import { Alert, Button, Col, InputNumber, Row, Table } from 'antd'
-import React from 'react'
+import { CheckOutlined, ShoppingOutlined } from '@ant-design/icons'
+import { Alert, Button, Col, Modal, Row } from 'antd'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { CartCheckoutForm } from '../components/customer/cart-checkout-form'
+import { CartProductList } from '../components/customer/cart-product-list'
 import { PageContainer } from '../components/customer/page-container'
-import { AsyncList } from '../components/shared/async-list'
 import { locale } from '../localization'
 import { useCart, useCartProducts } from '../services/cart-service'
+import { useCustomer } from '../services/customer-service'
 
 export const Cart = () => {
+  const [customer] = useCustomer()
   const cart = useCart()
   const cartProductsQuery = useCartProducts()
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
 
   return (
     <PageContainer>
@@ -40,86 +40,7 @@ export const Cart = () => {
               {locale.cartProducts} ({cart.totalItems})
             </h2>
             <hr />
-            <AsyncList
-              data={cartProductsQuery.data}
-              status={cartProductsQuery.status}
-              noDataMessage={locale.emptyCart}
-              render={products => (
-                <Table
-                  rowKey="id"
-                  pagination={false}
-                  dataSource={products}
-                  columns={[
-                    {
-                      title: 'Product',
-                      dataIndex: 'name',
-                      key: 'name',
-                      render: (_, product) => (
-                        <Link to={`/products/${product.id}`}>
-                          <div className="align-center">
-                            <img
-                              style={{ width: '100px' }}
-                              alt={product.name}
-                              src={product.photo}
-                            />
-                            <span className="px-8">{product.name}</span>
-                          </div>
-                        </Link>
-                      )
-                    },
-                    {
-                      title: 'Price',
-                      dataIndex: 'price',
-                      key: 'price'
-                    },
-                    {
-                      title: 'Quantity',
-                      dataIndex: 'quantity',
-                      key: 'quantity',
-                      render: (_, product) => {
-                        const cartItem = cart.byProductId[product.id]
-                        return (
-                          <InputNumber
-                            min={1}
-                            defaultValue={cartItem?.quantity}
-                            onChange={quantity =>
-                              cart.add(product.id, {
-                                quantity,
-                                sumQuantities: false
-                              })
-                            }
-                          />
-                        )
-                      }
-                    },
-                    {
-                      title: 'Total',
-                      dataIndex: 'total',
-                      key: 'total',
-                      render: (_, product) => {
-                        const cartItem = cart.byProductId[product.id]
-                        return (
-                          product.price * (cartItem ? cartItem.quantity : 1) +
-                          '$'
-                        )
-                      }
-                    },
-                    {
-                      title: '',
-                      dataIndex: 'remove',
-                      key: 'remove',
-                      render: (_, product) => (
-                        <Button
-                          icon={<CloseOutlined />}
-                          danger
-                          onClick={() => cart.remove(product.id)}
-                        />
-                      )
-                    }
-                  ]}
-                />
-              )}
-            />
+            <CartProductList />
           </Col>
 
           <Col sm={24} md={8}>
@@ -136,12 +57,40 @@ export const Cart = () => {
               {'$'}
             </div>
 
-            <Button type="primary" size="large" icon={<CheckOutlined />}>
-              {locale.order}
-            </Button>
+            {customer ? (
+              <Button
+                type="primary"
+                size="large"
+                icon={<CheckOutlined />}
+                onClick={() => setShowCheckoutModal(true)}
+              >
+                {locale.checkout}
+              </Button>
+            ) : (
+              <Alert
+                message="You're not logged in"
+                description={
+                  <>
+                    <Link to="/login">{locale.login}</Link> in order to checkout
+                  </>
+                }
+                type="warning"
+                showIcon
+              />
+            )}
           </Col>
         </Row>
       )}
+
+      <Modal
+        title={customer ? 'Enter checkout information' : ''}
+        visible={showCheckoutModal}
+        footer={null}
+        onCancel={() => setShowCheckoutModal(false)}
+        destroyOnClose
+      >
+        <CartCheckoutForm />
+      </Modal>
     </PageContainer>
   )
 }
