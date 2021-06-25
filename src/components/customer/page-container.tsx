@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
-import { useCustomer } from '../../hooks/use-customer'
+import { useCustomer } from '../../services/customer-service'
 import { useCart } from '../../services/cart-service'
 
 export interface NavLink {
@@ -26,7 +26,7 @@ const unauthenticatedCustomerItems: NavLink[] = [
 
 export const PageContainer: FC = ({ children }) => {
   const cart = useCart()
-  const customer = useCustomer()
+  const [customer] = useCustomer()
   const location = useLocation()
 
   return (

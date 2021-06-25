@@ -64,7 +64,6 @@ export interface CustomerDto {
   firstName: string
   lastName: string
   email: string
-  avatar: string
 }
 
 export interface ProductReviewDto {
@@ -74,4 +73,27 @@ export interface ProductReviewDto {
   productId: number
   customer: CustomerDto
   updatedAt: string
+}
+
+export interface CustomerRegisterRequestDto {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
+
+export interface CustomerLoginRequestDto {
+  email: string
+  password: string
+}
+
+export interface CustomerLoginResponseDto {
+  token: string
+  user: CustomerDto
+}
+
+export interface UserLogAction {
+  id: string
+  actionType: string
+  createdAt: string
 }

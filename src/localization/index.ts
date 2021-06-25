@@ -4,6 +4,7 @@ export const locale = {
   reviews: 'Reviews',
   addToCart: 'Add to cart',
   categories: 'Categories',
+  register: 'Register',
   selectCategory: 'Select category',
   searchForCategory: 'Search for category',
   selectSort: 'Select sort type',

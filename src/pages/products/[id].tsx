@@ -49,7 +49,7 @@ export const Product = () => {
               <Col xs={24} sm={12}>
                 <h1>{product.name}</h1>
                 <Link to={`/products?categoryId=${product.category.id}`}>
-                  <h3 className="secondary-color">{product.category.name}</h3>
+                  <h3 className="secondary-text">{product.category.name}</h3>
                 </Link>
                 <p className="py-16">{product.description}</p>
                 <div className="py-16">

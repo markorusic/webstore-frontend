@@ -36,8 +36,15 @@
 .primary-text {
   color: black;
 }
-.secondary-color {
+.secondary-text {
   color: rgba(0, 0, 0, 0.45);
+}
+.danger-text {
+  color: red;
+}
+
+.font-bold {
+  font-weight: bold;
 }
 
 .cursor-pointer {
@@ -71,4 +78,8 @@
 }
 .px-8 {
   padding: 0 8px;
+}
+
+.mb-2 {
+  margin-bottom: 2px;
 }
