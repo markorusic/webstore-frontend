@@ -8,6 +8,8 @@ export const locale = {
   searchForCategory: 'Search for category',
   selectSort: 'Select sort type',
   cart: 'Cart',
+  total: 'Total',
+  order: 'Order',
   cartProducts: 'Picked products',
   featuredCategories: 'Featured Categories',
   featuredProducts: 'Featured Products',
