@@ -89,6 +89,7 @@ export const useCartProducts = (options?: UseQueryOptions<ProductDto[]>) => {
     [cartKeys.cartProducts, productIds],
     () => productService.fetchByIds(productIds),
     {
+      keepPreviousData: true,
       enabled: productIds.length > 0,
       ...options
     }
