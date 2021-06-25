@@ -4,7 +4,7 @@ import { Col, Row } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import { ProductPageDto } from '../../types/dto'
 import { locale } from '../../localization'
-import { BaseList, BaseListProps } from '../shared/base-list'
+import { AsyncList, AsyncListProps } from '../shared/async-list'
 import { ImageCard } from '../shared/image-card'
 
 export interface ProductListItemProps {
@@ -25,13 +25,13 @@ export const ProductListItem: FC<ProductListItemProps> = ({ product }) => {
 }
 
 export type ProductListProps = Omit<
-  BaseListProps<ProductPageDto>,
+  AsyncListProps<ProductPageDto>,
   'renderItems'
 >
 
 export const ProductList: FC<ProductListProps> = props => {
   return (
-    <BaseList
+    <AsyncList
       {...props}
       renderItems={products => (
         <Row gutter={[16, 16]}>

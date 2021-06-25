@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Col, Row } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import { CategoryDto } from '../../types/dto'
-import { BaseList, BaseListProps } from '../shared/base-list'
+import { AsyncList, AsyncListProps } from '../shared/async-list'
 import { ImageCard } from '../shared/image-card'
 
 export interface CategoryListItemProps {
@@ -20,11 +20,11 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category }) => {
   )
 }
 
-export type CategoryListProps = Omit<BaseListProps<CategoryDto>, 'renderItems'>
+export type CategoryListProps = Omit<AsyncListProps<CategoryDto>, 'renderItems'>
 
 export const CategoryList: FC<CategoryListProps> = props => {
   return (
-    <BaseList
+    <AsyncList
       {...props}
       renderItems={categories => (
         <Row gutter={[16, 16]}>

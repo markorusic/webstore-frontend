@@ -1,6 +1,7 @@
 export const locale = {
   home: 'Home',
   products: 'Products',
+  reviews: 'Reviews',
   addToCart: 'Add to cart',
   categories: 'Categories',
   selectCategory: 'Select category',

@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Pagination, Row } from 'antd'
 import { PageContainer } from '../../components/customer/page-container'
 import { ProductList } from '../../components/customer/product-list'
-import { BaseList } from '../../components/shared/base-list'
+import { AsyncList } from '../../components/shared/async-list'
 import { SimpleSelect } from '../../components/shared/simple-select'
 import { locale } from '../../localization'
 import { useCategories } from '../../services/category-service'
@@ -28,7 +28,7 @@ export const Products = () => {
 
       <Row justify="space-between">
         <Col>
-          <BaseList
+          <AsyncList
             data={categoriesQuery.data}
             status={categoriesQuery.status}
             renderItems={categories => (

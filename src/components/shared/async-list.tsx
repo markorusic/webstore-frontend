@@ -4,17 +4,17 @@ import { QueryStatus } from 'react-query'
 import { locale } from '../../localization'
 import { Spin } from './spin'
 
-export interface BaseListProps<T> {
+export interface AsyncListProps<T> {
   data: T[] | undefined
   status: QueryStatus
   renderItems(items: T[]): ReactNode
 }
 
-export function BaseList<T>({
+export function AsyncList<T>({
   data = [],
   status,
   renderItems
-}: BaseListProps<T>) {
+}: AsyncListProps<T>) {
   return (
     <Spin spinning={status === 'loading'}>
       {status === 'success' &&

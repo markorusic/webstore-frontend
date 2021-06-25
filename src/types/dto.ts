@@ -28,8 +28,8 @@ export interface Page<T> {
 }
 
 export interface PageParams {
-  page?: number
-  size?: number
+  page?: number | string
+  size?: number | string
 }
 
 export interface CategoryDto {
@@ -57,4 +57,20 @@ export interface ProductDto {
   }[]
   description: string
   category: CategoryDto
+}
+
+export interface CustomerDto {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  avatar: string
+}
+
+export interface ProductReviewDto {
+  id: string
+  rate: number
+  content: string
+  productId: number
+  customer: CustomerDto
 }
