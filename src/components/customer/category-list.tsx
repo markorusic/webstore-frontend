@@ -20,13 +20,13 @@ export const CategoryListItem: FC<CategoryListItemProps> = ({ category }) => {
   )
 }
 
-export type CategoryListProps = Omit<AsyncListProps<CategoryDto>, 'renderItems'>
+export type CategoryListProps = Omit<AsyncListProps<CategoryDto>, 'render'>
 
 export const CategoryList: FC<CategoryListProps> = props => {
   return (
     <AsyncList
       {...props}
-      renderItems={categories => (
+      render={categories => (
         <Row gutter={[16, 16]}>
           {categories.map(category => (
             <Col key={category.id} xs={24} sm={12} md={6}>

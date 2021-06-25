@@ -7,14 +7,10 @@ import { Spin } from './spin'
 export interface AsyncListProps<T> {
   data: T[] | undefined
   status: QueryStatus
-  renderItems(items: T[]): ReactNode
+  render(items: T[]): ReactNode
 }
 
-export function AsyncList<T>({
-  data = [],
-  status,
-  renderItems
-}: AsyncListProps<T>) {
+export function AsyncList<T>({ data = [], status, render }: AsyncListProps<T>) {
   return (
     <Spin spinning={status === 'loading'}>
       {status === 'success' &&
@@ -26,7 +22,7 @@ export function AsyncList<T>({
             showIcon
           />
         ) : (
-          renderItems(data)
+          render(data)
         ))}
 
       {status === 'error' && (

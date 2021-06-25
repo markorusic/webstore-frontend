@@ -24,16 +24,13 @@ export const ProductListItem: FC<ProductListItemProps> = ({ product }) => {
   )
 }
 
-export type ProductListProps = Omit<
-  AsyncListProps<ProductPageDto>,
-  'renderItems'
->
+export type ProductListProps = Omit<AsyncListProps<ProductPageDto>, 'render'>
 
 export const ProductList: FC<ProductListProps> = props => {
   return (
     <AsyncList
       {...props}
-      renderItems={products => (
+      render={products => (
         <Row gutter={[16, 16]}>
           {products.map(product => (
             <Col key={product.id} xs={24} sm={12} md={8} xl={6}>

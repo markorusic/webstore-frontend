@@ -31,7 +31,7 @@ export const Products = () => {
           <AsyncList
             data={categoriesQuery.data}
             status={categoriesQuery.status}
-            renderItems={categories => (
+            render={categories => (
               <SimpleSelect
                 id="category-select"
                 label={locale.selectCategory}

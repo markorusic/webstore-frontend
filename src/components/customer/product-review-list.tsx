@@ -25,7 +25,7 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
     <AsyncList
       data={productReviewPageQuery.data?.content}
       status={productReviewPageQuery.status}
-      renderItems={reviews => (
+      render={reviews => (
         <div>
           {reviews.map(review => (
             <div key={review.id} className="py-16">
