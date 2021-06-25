@@ -1,5 +1,13 @@
+import { AxiosInstance } from 'axios'
 import { useEffect } from 'react'
+import {
+  QueryKey,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions
+} from 'react-query'
 import { createGlobalState } from 'react-use'
+import { env } from '../config/env'
 import {
   CustomerDto,
   CustomerLoginRequestDto,
@@ -10,6 +18,8 @@ import {
   UserLogAction
 } from '../types/dto'
 import { http } from '../utils/http'
+
+export const customerHttp = { ...http } as AxiosInstance
 
 export const customerService = {
   async register(dto: CustomerRegisterRequestDto) {
@@ -24,27 +34,35 @@ export const customerService = {
     return data
   },
   async me() {
-    const { data } = await http.get<CustomerDto>('/customers/me')
+    const { data } = await customerHttp.get<CustomerDto>('/customers/me')
     return data
   },
-  async update(dto: CustomerRegisterRequestDto) {
-    const { data } = await http.put<CustomerDto>('/customers/update', dto)
+  async update(dto: CustomerDto) {
+    const { data } = await customerHttp.put<CustomerDto>(
+      '/customers/update',
+      dto
+    )
     return data
   },
   async fetchActions(params: PageParams) {
-    const { data } = await http.get<Page<UserLogAction>>(
+    const { data } = await customerHttp.get<Page<UserLogAction>>(
       '/customers/me/actions',
-      { params }
+      { params: { ...params, sort: 'createdAt,desc' } }
     )
     return data
   }
+}
+
+export const customerKeys = {
+  customer: 'customer',
+  customerActions: 'customerActions'
 }
 
 const useCustomerState = createGlobalState<
   CustomerLoginResponseDto | undefined
 >(() => {
   try {
-    const rawCart = localStorage.getItem('customer')
+    const rawCart = localStorage.getItem(customerKeys.customer)
     const cart = rawCart ? JSON.parse(rawCart) : undefined
     return cart
   } catch {
@@ -56,11 +74,13 @@ type UseCustomerReturnType = [
   CustomerLoginResponseDto | undefined,
   {
     login(dto: CustomerLoginRequestDto): Promise<CustomerLoginResponseDto>
+    update(dto: CustomerDto): Promise<CustomerDto>
     logout(): void
   }
 ]
 
 export const useCustomer = (): UseCustomerReturnType => {
+  const queryClient = useQueryClient()
   const [customer, setCustomer] = useCustomerState()
 
   const login = async (dto: CustomerLoginRequestDto) => {
@@ -71,13 +91,41 @@ export const useCustomer = (): UseCustomerReturnType => {
 
   const logout = () => setCustomer(undefined)
 
+  const update = async (dto: CustomerDto) => {
+    const updatedCustomer = await customerService.update(dto)
+    queryClient.refetchQueries([customerKeys.customerActions], {
+      active: true
+    })
+    setCustomer(
+      customer =>
+        ({ ...customer, user: updatedCustomer } as CustomerLoginResponseDto)
+    )
+    return updatedCustomer
+  }
+
   useEffect(() => {
     if (customer) {
-      localStorage.setItem('customer', JSON.stringify(customer))
+      localStorage.setItem(customerKeys.customer, JSON.stringify(customer))
+      customerHttp.interceptors.request.use(request => {
+        request.headers[env.API_TOKEN_HEADER] = customer.token
+        return request
+      })
     } else {
-      localStorage.removeItem('customer')
+      localStorage.removeItem(customerKeys.customer)
     }
   }, [customer])
 
-  return [customer, { login, logout }]
+  return [customer, { login, update, logout }]
+}
+
+export const useCustomerActions = (
+  params: PageParams,
+  options?: UseQueryOptions<Page<UserLogAction>>
+) => {
+  const key: QueryKey = [customerKeys.customerActions, ...Object.values(params)]
+  const query = useQuery(key, () => customerService.fetchActions(params), {
+    keepPreviousData: true,
+    ...options
+  })
+  return query
 }
