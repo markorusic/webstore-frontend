@@ -73,4 +73,5 @@ export interface ProductReviewDto {
   content: string
   productId: number
   customer: CustomerDto
+  updatedAt: string
 }

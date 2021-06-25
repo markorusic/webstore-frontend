@@ -4,14 +4,11 @@ import { Button, Col, Image, Row } from 'antd'
 import { PageContainer } from '../../components/customer/page-container'
 import { AsyncContainer } from '../../components/shared/async-container'
 import { useProduct } from '../../services/products-service'
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  ShoppingCartOutlined
-} from '@ant-design/icons'
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import { locale } from '../../localization'
 import { ProductReviewList } from '../../components/customer/product-review-list'
 import { ProductReviewFetchParams } from '../../services/product-review-service'
+import { SimpleSelect } from '../../components/shared/simple-select'
 
 export const Product = () => {
   const { id } = useParams<{ id: string }>()
@@ -21,7 +18,7 @@ export const Product = () => {
       id,
       page: 0,
       size: 5,
-      sort: 'rate,asc'
+      sort: 'updatedAt,desc'
     })
 
   return (
@@ -65,27 +62,24 @@ export const Product = () => {
               <div className="space-between">
                 <h2>{locale.reviews}</h2>
 
-                <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (productReviewFetchParams.sort === 'rate,asc') {
+                <div className="px-8">
+                  <SimpleSelect
+                    id="review-sort-select"
+                    placeholder={locale.selectSort}
+                    defaultValue={productReviewFetchParams.sort}
+                    onChange={value =>
                       setProductReviewFetchParams(params => ({
                         ...params,
-                        sort: 'rate,desc'
-                      }))
-                    } else {
-                      setProductReviewFetchParams(params => ({
-                        ...params,
-                        sort: 'rate,asc'
+                        sort: value as ProductReviewFetchParams['sort']
                       }))
                     }
-                  }}
-                >
-                  {productReviewFetchParams.sort === 'rate,asc' ? (
-                    <ArrowUpOutlined style={{ fontSize: '24px' }} />
-                  ) : (
-                    <ArrowDownOutlined style={{ fontSize: '24px' }} />
-                  )}
+                    items={[
+                      { title: 'Most recent', value: 'updatedAt,desc' },
+                      { title: 'Least recent', value: 'updatedAt,asc' },
+                      { title: 'Highest rated ', value: 'rate,desc' },
+                      { title: 'Lowest rated ', value: 'rate,asc' }
+                    ]}
+                  />
                 </div>
               </div>
               <ProductReviewList

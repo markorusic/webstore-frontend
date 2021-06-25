@@ -2,6 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react'
 import { UserOutlined, StarFilled, StarOutlined } from '@ant-design/icons'
 import { Pagination } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
+import dayjs from 'dayjs'
 import {
   ProductReviewFetchParams,
   useProductReviewPage
@@ -40,6 +41,9 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
                     {i < review.rate ? <StarFilled /> : <StarOutlined />}
                   </span>
                 ))}
+                <span className="px-8">
+                  {dayjs(review.updatedAt).format('MM/DD/YYYY')}
+                </span>
               </div>
               <div>{review.content}</div>
             </div>

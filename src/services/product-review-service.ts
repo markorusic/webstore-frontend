@@ -4,7 +4,7 @@ import { http } from '../utils/http'
 
 export type ProductReviewFetchParams = PageParams & {
   id: string | number
-  sort?: 'rate,asc' | 'rate,desc'
+  sort?: 'rate,asc' | 'rate,desc' | 'updatedAt,asc' | 'updatedAt,desc'
 }
 
 export const productReviewService = {
