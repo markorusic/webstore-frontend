@@ -2,8 +2,7 @@ import { SaveOutlined } from '@ant-design/icons'
 import { notification } from 'antd'
 import React from 'react'
 import * as yup from 'yup'
-import { queryClient } from '../../config/query-clinet'
-import { customerKeys, useCustomer } from '../../services/customer-service'
+import { useCustomer } from '../../services/customer-service'
 import { CustomerDto } from '../../types/dto'
 import { Form, TextInput, SubmitButton } from '../shared/form'
 
@@ -23,9 +22,6 @@ export const CustomerUpdateForm = () => {
       onSubmit={values =>
         update(values)
           .then(() => {
-            queryClient.refetchQueries([customerKeys.customerActions], {
-              active: true
-            })
             notification.open({
               type: 'success',
               message: 'Successfully updated!'
