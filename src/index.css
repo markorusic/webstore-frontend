@@ -26,9 +26,17 @@
   border: 1px solid;
 }
 
+.cart-checkout-total {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /* Utils */
 
-.color-secondary {
+.primary-text {
+  color: black;
+}
+.secondary-color {
   color: rgba(0, 0, 0, 0.45);
 }
 
@@ -39,17 +47,14 @@
 .d-flex {
   display: flex;
 }
-
 .space-between {
   display: flex;
   justify-content: space-between;
 }
-
 .align-center {
   display: flex;
   align-items: center;
 }
-
 .justify-end {
   display: flex;
   justify-content: flex-end;

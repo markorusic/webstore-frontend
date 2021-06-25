@@ -64,7 +64,9 @@ export const useCart = () => {
   const remove = (productId: string) => {
     setValue({
       ...value,
-      items: value.items.filter(item => item.productId !== productId)
+      items: value.items.filter(
+        item => item.productId.toString() !== productId.toString()
+      )
     })
   }
 
@@ -75,11 +77,18 @@ export const useCart = () => {
     )
   }, [value.items])
 
+  const byProductId = useMemo(() => {
+    return value.items.reduce((map, item) => {
+      map[item.productId] = item
+      return map
+    }, {} as Record<string, CartItem>)
+  }, [value.items])
+
   useEffect(() => {
     localStorage.setItem(cartKeys.cart, JSON.stringify(value))
   }, [value])
 
-  return { value, add, remove, totalItems }
+  return { value, setValue, add, remove, byProductId, totalItems }
 }
 
 export const useCartProducts = (options?: UseQueryOptions<ProductDto[]>) => {
@@ -90,9 +99,19 @@ export const useCartProducts = (options?: UseQueryOptions<ProductDto[]>) => {
     () => productService.fetchByIds(productIds),
     {
       keepPreviousData: true,
-      enabled: productIds.length > 0,
       ...options
     }
   )
+
+  useEffect(() => {
+    if (query.isSuccess && query.data.length !== cart.value.items.length) {
+      const productIds = query.data.map(product => product.id)
+      cart.setValue(({ items, ...rest }) => ({
+        ...rest,
+        items: items.filter(item => productIds.includes(item.productId))
+      }))
+    }
+  }, [query.data, query.isSuccess, cart])
+
   return query
 }

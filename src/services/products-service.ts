@@ -22,6 +22,9 @@ export const productService = {
     return data
   },
   async fetchByIds(ids: (string | number)[]) {
+    if (ids.length === 0) {
+      return [] as ProductDto[]
+    }
     const { data } = await http.get<ProductDto[]>('/products/findByIds', {
       params: { ids: ids.join(',') }
     })

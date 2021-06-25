@@ -8,16 +8,24 @@ export interface AsyncListProps<T> {
   data: T[] | undefined
   status: QueryStatus
   render(items: T[]): ReactNode
+  errorMessage?: string
+  noDataMessage?: string
 }
 
-export function AsyncList<T>({ data = [], status, render }: AsyncListProps<T>) {
+export function AsyncList<T>({
+  data = [],
+  status,
+  render,
+  errorMessage = locale.loadingError,
+  noDataMessage = locale.noDataForThatQuery
+}: AsyncListProps<T>) {
   return (
     <Spin spinning={status === 'loading'}>
       {status === 'success' &&
         (data.length === 0 ? (
           <Alert
             message={locale.noData}
-            description={locale.noDataForThatQuery}
+            description={noDataMessage}
             type="warning"
             showIcon
           />
@@ -28,7 +36,7 @@ export function AsyncList<T>({ data = [], status, render }: AsyncListProps<T>) {
       {status === 'error' && (
         <Alert
           message={locale.error}
-          description={locale.loadingError}
+          description={errorMessage}
           type="error"
           showIcon
         />
