@@ -9,9 +9,11 @@ import { locale } from '../../localization'
 import { ProductReviewList } from '../../components/customer/product-review-list'
 import { ProductReviewFetchParams } from '../../services/product-review-service'
 import { SimpleSelect } from '../../components/shared/simple-select'
+import { useCart } from '../../services/cart-service'
 
 export const Product = () => {
   const { id } = useParams<{ id: string }>()
+  const cart = useCart()
   const productQuery = useProduct(id)
   const [productReviewFetchParams, setProductReviewFetchParams] =
     useState<ProductReviewFetchParams>({
@@ -51,7 +53,11 @@ export const Product = () => {
                 </Link>
                 <p className="py-16">{product.description}</p>
                 <div className="py-16">
-                  <Button size="large" icon={<ShoppingCartOutlined />}>
+                  <Button
+                    size="large"
+                    icon={<ShoppingCartOutlined />}
+                    onClick={() => cart.add(product.id)}
+                  >
                     {locale.addToCart}
                   </Button>
                 </div>

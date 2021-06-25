@@ -3,6 +3,7 @@ import { QueryClientProvider } from 'react-query'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { queryClient } from './config/query-clinet'
 import { Home } from './pages'
+import { Cart } from './pages/cart'
 import { Categories } from './pages/categories'
 import { Login } from './pages/login'
 import { Products } from './pages/products'
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/products/:id">
             <Product />
+          </Route>
+          <Route path="/cart">
+            <Cart />
           </Route>
           <Route path="/categories">
             <Categories />

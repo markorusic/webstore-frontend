@@ -36,6 +36,10 @@
   cursor: pointer;
 }
 
+.d-flex {
+  display: flex;
+}
+
 .space-between {
   display: flex;
   justify-content: space-between;

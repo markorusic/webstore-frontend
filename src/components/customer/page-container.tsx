@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import { useCustomer } from '../../hooks/use-customer'
+import { useCart } from '../../services/cart-service'
 
 export interface NavLink {
   title: string
@@ -15,7 +16,6 @@ const baseItems: NavLink[] = [
 ]
 
 const authenticatedCustomerItems: NavLink[] = [
-  { title: 'Cart', path: '/cart' },
   { title: 'Profile', path: '/profile' }
 ]
 
@@ -25,6 +25,7 @@ const unauthenticatedCustomerItems: NavLink[] = [
 ]
 
 export const PageContainer: FC = ({ children }) => {
+  const cart = useCart()
   const customer = useCustomer()
   const location = useLocation()
 
@@ -45,6 +46,10 @@ export const PageContainer: FC = ({ children }) => {
             <Link to={item.path}>{item.title}</Link>
           </Menu.Item>
         ))}
+
+        <Menu.Item key="/cart">
+          <Link to="/cart">Cart ({cart.totalItems})</Link>
+        </Menu.Item>
       </Menu>
 
       <div className="py-16">{children}</div>
