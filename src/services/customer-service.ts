@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
@@ -12,6 +12,7 @@ import {
   PageParams,
   UserLogAction
 } from '../types/dto'
+import { identity } from '../utils'
 import { http } from '../utils/http'
 
 export const customerHttp = { ...http } as AxiosInstance
@@ -75,7 +76,7 @@ export const useCustomer = (): UseCustomerReturnType => {
     return customer
   }
 
-  const logout = () => setCustomer(undefined)
+  const logout = useCallback(() => setCustomer(undefined), [setCustomer])
 
   const update = async (dto: UserDto) => {
     const updatedCustomer = await customerService.update(dto)
@@ -92,10 +93,18 @@ export const useCustomer = (): UseCustomerReturnType => {
         request.headers[env.API_TOKEN_HEADER] = customer.token
         return request
       })
+
+      customerHttp.interceptors.response.use(identity, error => {
+        if (401 === error.response.status) {
+          logout()
+        } else {
+          return Promise.reject(error)
+        }
+      })
     } else {
       localStorage.removeItem(customerKeys.customer)
     }
-  }, [customer])
+  }, [customer, logout])
 
   return [customer, { login, update, logout }]
 }
