@@ -1,8 +1,10 @@
 import { useEffect, useMemo } from 'react'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
+import { queryClient } from '../config/query-clinet'
 import { OrderDto, OrderRequestDto, ProductDto } from '../types/dto'
 import { customerHttp } from './customer-service'
+import { orderKeys } from './order-service'
 import { productService } from './products-service'
 
 export const cartKeys = {
@@ -80,6 +82,7 @@ export const useCart = () => {
     }
     const order = await customerHttp.post<OrderDto>('/orders/save', dto)
     setValue({ ...initalCart })
+    queryClient.invalidateQueries(orderKeys.customerOrders)
     return order
   }
 

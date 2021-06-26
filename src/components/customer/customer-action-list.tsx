@@ -16,6 +16,7 @@ export const CustomerActionList = () => {
       render={actions => (
         <div>
           <Table
+            rowKey="id"
             pagination={false}
             dataSource={actions}
             columns={[

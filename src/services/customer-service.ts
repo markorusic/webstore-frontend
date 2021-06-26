@@ -1,11 +1,6 @@
 import { AxiosInstance } from 'axios'
 import { useEffect } from 'react'
-import {
-  QueryKey,
-  useQuery,
-  useQueryClient,
-  UseQueryOptions
-} from 'react-query'
+import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
 import {
@@ -80,7 +75,6 @@ type UseCustomerReturnType = [
 ]
 
 export const useCustomer = (): UseCustomerReturnType => {
-  const queryClient = useQueryClient()
   const [customer, setCustomer] = useCustomerState()
 
   const login = async (dto: CustomerLoginRequestDto) => {
@@ -93,9 +87,6 @@ export const useCustomer = (): UseCustomerReturnType => {
 
   const update = async (dto: CustomerDto) => {
     const updatedCustomer = await customerService.update(dto)
-    queryClient.refetchQueries([customerKeys.customerActions], {
-      active: true
-    })
     setCustomer(
       customer =>
         ({ ...customer, user: updatedCustomer } as CustomerLoginResponseDto)

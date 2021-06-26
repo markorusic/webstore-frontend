@@ -106,11 +106,15 @@ export interface OrderRequestDto {
     productId: string
   }[]
 }
+
+export type OrderStatus = 'Pending' | 'Canceled' | 'Shipped'
+
 export interface OrderDto {
   id: number
   shippingAddress: string
   note: string
-  status: string
+  createdAt: string
+  status: OrderStatus
   customer: CustomerDto
   orderDetails: {
     id: number
