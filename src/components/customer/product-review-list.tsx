@@ -3,7 +3,6 @@ import {
   UserOutlined,
   StarFilled,
   StarOutlined,
-  CommentOutlined,
   EditOutlined
 } from '@ant-design/icons'
 import { Pagination } from 'antd'
