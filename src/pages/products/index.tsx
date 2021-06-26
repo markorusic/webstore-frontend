@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Pagination, Row } from 'antd'
+import { Pagination } from 'antd'
 import { PageContainer } from '../../components/customer/page-container'
 import { ProductList } from '../../components/customer/product-list'
 import { AsyncList } from '../../components/shared/async-list'
@@ -26,48 +26,44 @@ export const Products = () => {
     <PageContainer>
       <h1>{locale.products}</h1>
 
-      <Row justify="space-between">
-        <Col>
-          <AsyncList
-            data={categoriesQuery.data}
-            status={categoriesQuery.status}
-            render={categories => (
-              <SimpleSelect
-                id="category-select"
-                label={locale.selectCategory}
-                placeholder={locale.searchForCategory}
-                defaultValue={urlQuery.params.categoryId?.toString()}
-                onChange={categoryId =>
-                  urlQuery.setParams({
-                    categoryId,
-                    page: 0
-                  })
-                }
-                items={categories.map(category => ({
-                  title: category.name,
-                  value: category.id
-                }))}
-              />
-            )}
-          />
-        </Col>
+      <div className="space-between">
+        <AsyncList
+          data={categoriesQuery.data}
+          status={categoriesQuery.status}
+          render={categories => (
+            <SimpleSelect
+              id="category-select"
+              label={locale.selectCategory}
+              placeholder={locale.searchForCategory}
+              defaultValue={urlQuery.params.categoryId?.toString()}
+              onChange={categoryId =>
+                urlQuery.setParams({
+                  categoryId,
+                  page: 0
+                })
+              }
+              items={categories.map(category => ({
+                title: category.name,
+                value: category.id
+              }))}
+            />
+          )}
+        />
 
-        <Col>
-          <SimpleSelect
-            id="sort-select"
-            label={locale.selectSort}
-            placeholder={locale.selectSort}
-            defaultValue={urlQuery.params.sort}
-            onChange={value => urlQuery.setParam('sort', value)}
-            items={[
-              { title: 'Price Descending ', value: 'price,desc' },
-              { title: 'Price Ascending ', value: 'price,asc' },
-              { title: 'Name Descending ', value: 'name,desc' },
-              { title: 'Name Ascending ', value: 'name,asc' }
-            ]}
-          />
-        </Col>
-      </Row>
+        <SimpleSelect
+          id="sort-select"
+          label={locale.selectSort}
+          placeholder={locale.selectSort}
+          defaultValue={urlQuery.params.sort}
+          onChange={value => urlQuery.setParam('sort', value)}
+          items={[
+            { title: 'Price Descending ', value: 'price,desc' },
+            { title: 'Price Ascending ', value: 'price,asc' },
+            { title: 'Name Descending ', value: 'name,desc' },
+            { title: 'Name Ascending ', value: 'name,asc' }
+          ]}
+        />
+      </div>
 
       <div className="py-16">
         <ProductList

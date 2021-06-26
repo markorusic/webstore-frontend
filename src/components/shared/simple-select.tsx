@@ -21,7 +21,7 @@ export const SimpleSelect: FC<SimpleSelectProps> = ({
   return (
     <div>
       {label && (
-        <div>
+        <div className="py-4">
           <label
             className="cursor-pointer"
             // @ts-ignore
