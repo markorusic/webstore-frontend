@@ -13,13 +13,17 @@ import { useAdmin } from '../../services/admin-service'
 import { NavLink } from '../../utils'
 
 const baseItems: NavLink[] = [
-  { title: locale.home, path: '/', icon: <HomeOutlined /> },
+  { title: locale.home, path: '/admin', icon: <HomeOutlined /> },
+  {
+    title: locale.products,
+    path: '/admin/products',
+    icon: <ShoppingOutlined />
+  },
   {
     title: locale.categories,
-    path: '/categories',
+    path: '/admin/categories',
     icon: <UnorderedListOutlined />
-  },
-  { title: locale.products, path: '/products', icon: <ShoppingOutlined /> }
+  }
 ]
 
 export const PageContainer: FC = ({ children }) => {
