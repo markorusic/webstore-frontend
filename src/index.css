@@ -41,6 +41,19 @@
   font-weight: bold;
 }
 
+.active-item-container {
+  background-color: #fff;
+  padding: 12px 24px;
+  margin: 10px 0 0 0;
+}
+
+@media only screen and (min-width: 1200px) {
+  .active-item-container {
+    border-left: 10px solid #f0f1f5;
+    margin-top: 0;
+  }
+}
+
 /* Utils */
 
 .primary-text {

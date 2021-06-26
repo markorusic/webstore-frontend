@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
@@ -11,6 +11,7 @@ import {
   LoginResponseDto,
   UserDto
 } from '../types/dto'
+import { identity } from '../utils'
 import { http } from '../utils/http'
 
 export const adminHttp = { ...http } as AxiosInstance
@@ -65,7 +66,7 @@ export const useAdmin = (): UseAdminReturnType => {
     return admin
   }
 
-  const logout = () => setAdmin(undefined)
+  const logout = useCallback(() => setAdmin(undefined), [setAdmin])
 
   useEffect(() => {
     if (admin) {
@@ -74,10 +75,18 @@ export const useAdmin = (): UseAdminReturnType => {
         request.headers[env.API_TOKEN_HEADER] = admin.token
         return request
       })
+
+      adminHttp.interceptors.response.use(identity, error => {
+        if (401 === error.response.status) {
+          logout()
+        } else {
+          return Promise.reject(error)
+        }
+      })
     } else {
       localStorage.removeItem(adminKeys.admin)
     }
-  }, [admin])
+  }, [admin, logout])
 
   return [admin, { login, logout }]
 }
