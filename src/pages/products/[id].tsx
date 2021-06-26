@@ -11,7 +11,7 @@ import { ProductReviewFetchParams } from '../../services/product-review-service'
 import { SimpleSelect } from '../../components/shared/simple-select'
 import { useCart } from '../../services/cart-service'
 import { useCustomer } from '../../services/customer-service'
-import { ProductReviewForm } from '../../components/customer/product-review-form'
+import { CustomerProductReview } from '../../components/customer/product-review-form'
 
 export const Product = () => {
   const { id } = useParams<{ id: string }>()
@@ -92,7 +92,7 @@ export const Product = () => {
                 </div>
               </div>
 
-              {customer && <ProductReviewForm productId={product.id} />}
+              {customer && <CustomerProductReview productId={product.id} />}
 
               <ProductReviewList
                 params={productReviewFetchParams}

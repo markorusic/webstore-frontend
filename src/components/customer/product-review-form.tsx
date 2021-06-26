@@ -9,6 +9,7 @@ import {
   productReviewService,
   useCustomerProductReviews
 } from '../../services/product-review-service'
+import { ProductReviewDto, ProductReviewRequestDto } from '../../types/dto'
 import { AsyncContainer } from '../shared/async-container'
 import { ButtonModal } from '../shared/button-modal'
 import {
@@ -24,10 +25,75 @@ const validationSchema = yup.object().shape({
 })
 
 export interface ProductReviewFormProps {
-  productId: string
+  initialValues: ProductReviewRequestDto
+  onSubmit(values: ProductReviewRequestDto): Promise<ProductReviewDto>
 }
 
 export const ProductReviewForm: FC<ProductReviewFormProps> = ({
+  initialValues,
+  onSubmit
+}) => {
+  return (
+    <Form
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={values =>
+        onSubmit(values)
+          .then(() => {
+            queryClient.refetchQueries(productReviewQueryKeys.productReviews, {
+              active: true
+            })
+            queryClient.refetchQueries(
+              productReviewQueryKeys.customerRroductReviews,
+              { active: true }
+            )
+            notification.open({
+              type: 'success',
+              message: 'Successfully submited review!'
+            })
+          })
+          .catch((err: any) => {
+            notification.open({
+              type: 'error',
+              message: err?.response?.data?.message ?? 'An error occured!'
+            })
+          })
+      }
+    >
+      {form => (
+        <>
+          <FormInputContainer name="rate" label="Rate">
+            <InputNumber
+              min={1}
+              max={10}
+              value={form.values.rate}
+              onChange={rate =>
+                form.setValues(values => ({
+                  ...values,
+                  rate: parseFloat(rate.toString())
+                }))
+              }
+            />
+          </FormInputContainer>
+
+          <TextAreaInput name="content" label="Content" />
+
+          <div className="py-8">
+            <SubmitButton type="primary" icon={<SaveOutlined />}>
+              Submit
+            </SubmitButton>
+          </div>
+        </>
+      )}
+    </Form>
+  )
+}
+
+export interface CustomerProductReviewProps {
+  productId: string
+}
+
+export const CustomerProductReview: FC<CustomerProductReviewProps> = ({
   productId
 }) => {
   const customerOrdersQuery = useCustomerOrders()
@@ -63,61 +129,10 @@ export const ProductReviewForm: FC<ProductReviewFormProps> = ({
               modalProps={{ destroyOnClose: true }}
               buttonProps={{ icon: <CommentOutlined /> }}
             >
-              <Form
-                initialValues={{ rate: 5, content: '' }}
-                validationSchema={validationSchema}
-                onSubmit={values =>
-                  productReviewService
-                    .save({ ...values, productId })
-                    .then(() => {
-                      queryClient.refetchQueries(
-                        productReviewQueryKeys.productReviews,
-                        { active: true }
-                      )
-                      queryClient.refetchQueries(
-                        productReviewQueryKeys.customerRroductReviews,
-                        { active: true }
-                      )
-                      notification.open({
-                        type: 'success',
-                        message: 'Successfully submited review!'
-                      })
-                    })
-                    .catch((err: any) => {
-                      notification.open({
-                        type: 'error',
-                        message:
-                          err?.response?.data?.message ?? 'An error occured!'
-                      })
-                    })
-                }
-              >
-                {form => (
-                  <>
-                    <FormInputContainer name="rate" label="Rate">
-                      <InputNumber
-                        min={1}
-                        max={10}
-                        value={form.values.rate}
-                        onChange={rate =>
-                          form.setValues(values => ({
-                            ...values,
-                            rate: parseFloat(rate.toString())
-                          }))
-                        }
-                      />
-                    </FormInputContainer>
-
-                    <TextAreaInput name="content" label="Content" />
-
-                    <div className="py-8">
-                      <SubmitButton type="primary" icon={<SaveOutlined />}>
-                        Submit
-                      </SubmitButton>
-                    </div>
-                  </>
-                )}
-              </Form>
+              <ProductReviewForm
+                initialValues={{ productId, rate: 5, content: '' }}
+                onSubmit={productReviewService.save}
+              />
             </ButtonModal>
           </div>
         )

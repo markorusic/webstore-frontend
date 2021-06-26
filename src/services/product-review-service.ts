@@ -35,6 +35,13 @@ export const productReviewService = {
       dto
     )
     return data
+  },
+  async update(dto: ProductReviewRequestDto) {
+    const { data } = await customerHttp.put<ProductReviewDto>(
+      '/product-reviews/update',
+      dto
+    )
+    return data
   }
 }
 

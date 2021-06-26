@@ -127,6 +127,7 @@ export interface OrderDto {
 }
 
 export interface ProductReviewRequestDto {
+  id?: string | number
   productId: string
   content: string
   rate: number
