@@ -1,5 +1,6 @@
 export const locale = {
   home: 'Home',
+  welcome: 'Welcome',
   products: 'Products',
   reviews: 'Reviews',
   addToCart: 'Add to cart',
@@ -25,5 +26,8 @@ export const locale = {
   error: 'Error',
   loadingError: 'An error occured while loading your data.',
   noData: 'No data',
-  noDataForThatQuery: 'We did not find data that you requested.'
+  noDataForThatQuery: 'We did not find data that you requested.',
+  admin: {
+    login: 'Admin login'
+  }
 }

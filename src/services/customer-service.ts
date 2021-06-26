@@ -4,9 +4,9 @@ import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
 import {
-  CustomerDto,
-  CustomerLoginRequestDto,
-  CustomerLoginResponseDto,
+  UserDto,
+  LoginRequestDto,
+  LoginResponseDto,
   CustomerRegisterRequestDto,
   Page,
   PageParams,
@@ -18,25 +18,19 @@ export const customerHttp = { ...http } as AxiosInstance
 
 export const customerService = {
   async register(dto: CustomerRegisterRequestDto) {
-    const { data } = await http.post<CustomerDto>('/customers/register', dto)
+    const { data } = await http.post<UserDto>('/customers/register', dto)
     return data
   },
-  async login(dto: CustomerLoginRequestDto) {
-    const { data } = await http.post<CustomerLoginResponseDto>(
-      '/customers/login',
-      dto
-    )
+  async login(dto: LoginRequestDto) {
+    const { data } = await http.post<LoginResponseDto>('/customers/login', dto)
     return data
   },
   async me() {
-    const { data } = await customerHttp.get<CustomerDto>('/customers/me')
+    const { data } = await customerHttp.get<UserDto>('/customers/me')
     return data
   },
-  async update(dto: CustomerDto) {
-    const { data } = await customerHttp.put<CustomerDto>(
-      '/customers/update',
-      dto
-    )
+  async update(dto: UserDto) {
+    const { data } = await customerHttp.put<UserDto>('/customers/update', dto)
     return data
   },
   async fetchActions(params: PageParams) {
@@ -53,9 +47,7 @@ export const customerKeys = {
   customerActions: 'customerActions'
 }
 
-const useCustomerState = createGlobalState<
-  CustomerLoginResponseDto | undefined
->(() => {
+const useCustomerState = createGlobalState<LoginResponseDto | undefined>(() => {
   try {
     const rawCart = localStorage.getItem(customerKeys.customer)
     const cart = rawCart ? JSON.parse(rawCart) : undefined
@@ -66,10 +58,10 @@ const useCustomerState = createGlobalState<
 })
 
 type UseCustomerReturnType = [
-  CustomerLoginResponseDto | undefined,
+  LoginResponseDto | undefined,
   {
-    login(dto: CustomerLoginRequestDto): Promise<CustomerLoginResponseDto>
-    update(dto: CustomerDto): Promise<CustomerDto>
+    login(dto: LoginRequestDto): Promise<LoginResponseDto>
+    update(dto: UserDto): Promise<UserDto>
     logout(): void
   }
 ]
@@ -77,7 +69,7 @@ type UseCustomerReturnType = [
 export const useCustomer = (): UseCustomerReturnType => {
   const [customer, setCustomer] = useCustomerState()
 
-  const login = async (dto: CustomerLoginRequestDto) => {
+  const login = async (dto: LoginRequestDto) => {
     const customer = await customerService.login(dto)
     setCustomer(customer)
     return customer
@@ -85,11 +77,10 @@ export const useCustomer = (): UseCustomerReturnType => {
 
   const logout = () => setCustomer(undefined)
 
-  const update = async (dto: CustomerDto) => {
+  const update = async (dto: UserDto) => {
     const updatedCustomer = await customerService.update(dto)
     setCustomer(
-      customer =>
-        ({ ...customer, user: updatedCustomer } as CustomerLoginResponseDto)
+      customer => ({ ...customer, user: updatedCustomer } as LoginResponseDto)
     )
     return updatedCustomer
   }

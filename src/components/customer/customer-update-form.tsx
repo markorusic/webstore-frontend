@@ -3,7 +3,7 @@ import { notification } from 'antd'
 import React from 'react'
 import * as yup from 'yup'
 import { useCustomer } from '../../services/customer-service'
-import { CustomerDto } from '../../types/dto'
+import { UserDto } from '../../types/dto'
 import { Form, TextInput, SubmitButton } from '../shared/form'
 
 const validationSchema = yup.object().shape({
@@ -13,7 +13,7 @@ const validationSchema = yup.object().shape({
 
 export const CustomerUpdateForm = () => {
   const [customer, { update }] = useCustomer()
-  const customerDetails = customer?.user as CustomerDto
+  const customerDetails = customer?.user as UserDto
   return (
     <Form
       initialValues={customerDetails}

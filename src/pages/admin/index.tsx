@@ -1,3 +1,14 @@
-export const AdminHome = () => {
-  return <div className="p-10 border-4 bg-red-300">admin</div>
+import { PageContainer } from '../../components/admin/page-container'
+import { locale } from '../../localization'
+import { useAdmin } from '../../services/admin-service'
+
+export const Home = () => {
+  const [admin] = useAdmin()
+  return (
+    <PageContainer>
+      <h1 className="text-center">
+        {locale.welcome} {admin?.user.firstName}
+      </h1>
+    </PageContainer>
+  )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { withAuth, withUnauth } from './utils'
 import { Home } from '../../pages'
 import { Cart } from '../../pages/cart'
@@ -16,7 +16,7 @@ const UnauthenticatedRegister = withUnauth(Register)
 
 export const CustomerApp = () => {
   return (
-    <>
+    <Switch>
       <Route exact path="/">
         <Home />
       </Route>
@@ -41,6 +41,6 @@ export const CustomerApp = () => {
       <Route path="/profile">
         <AuthenticatedProfile />
       </Route>
-    </>
+    </Switch>
   )
 }

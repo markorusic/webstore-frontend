@@ -1,13 +1,11 @@
 import { LoginOutlined } from '@ant-design/icons'
 import { notification } from 'antd'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
 import * as yup from 'yup'
-import { PageContainer } from '../components/customer/page-container'
-import { Form, SubmitButton, TextInput } from '../components/shared/form'
-import { locale } from '../localization'
-import { useCustomer } from '../services/customer-service'
-import { UserDto, LoginRequestDto } from '../types/dto'
+import { Form, TextInput, SubmitButton } from '../../components/shared/form'
+import { locale } from '../../localization'
+import { useAdmin } from '../../services/admin-service'
+import { LoginRequestDto } from '../../types/dto'
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -15,17 +13,16 @@ const validationSchema = yup.object().shape({
 })
 
 export const Login = () => {
-  const [, { login }] = useCustomer()
-  const location = useLocation<UserDto | undefined>()
+  const [, { login }] = useAdmin()
 
   const initialValues: LoginRequestDto = {
-    email: location.state?.email ?? '',
+    email: '',
     password: ''
   }
 
   return (
-    <PageContainer>
-      <h1>{locale.login}</h1>
+    <div className="py-16 page-content-container">
+      <h1>{locale.admin.login}</h1>
       <Form
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -52,6 +49,6 @@ export const Login = () => {
           {locale.login}
         </SubmitButton>
       </Form>
-    </PageContainer>
+    </div>
   )
 }

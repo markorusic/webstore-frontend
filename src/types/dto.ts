@@ -59,7 +59,7 @@ export interface ProductDto {
   category: CategoryDto
 }
 
-export interface CustomerDto {
+export interface UserDto {
   id: string
   firstName: string
   lastName: string
@@ -71,7 +71,7 @@ export interface ProductReviewDto {
   rate: number
   content: string
   productId: number
-  customer: CustomerDto
+  customer: UserDto
   updatedAt: string
 }
 
@@ -82,14 +82,14 @@ export interface CustomerRegisterRequestDto {
   password: string
 }
 
-export interface CustomerLoginRequestDto {
+export interface LoginRequestDto {
   email: string
   password: string
 }
 
-export interface CustomerLoginResponseDto {
+export interface LoginResponseDto {
   token: string
-  user: CustomerDto
+  user: UserDto
 }
 
 export interface UserLogAction {
@@ -115,7 +115,7 @@ export interface OrderDto {
   note: string
   createdAt: string
   status: OrderStatus
-  customer: CustomerDto
+  customer: UserDto
   orderDetails: {
     id: number
     name: string

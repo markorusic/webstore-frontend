@@ -8,15 +8,17 @@ import { PageContainer } from '../components/customer/page-container'
 import { queryClient } from '../config/query-clinet'
 import { locale } from '../localization'
 import { customerKeys, useCustomer } from '../services/customer-service'
-import { CustomerDto } from '../types/dto'
+import { UserDto } from '../types/dto'
 
 export const Profile = () => {
   const [customer, { logout }] = useCustomer()
-  const customerDetails = customer?.user as CustomerDto
+  const customerDetails = customer?.user as UserDto
   return (
     <PageContainer>
       <div className="space-between">
-        <h1>Welcome {customerDetails.firstName}</h1>
+        <h1>
+          {locale.welcome} {customerDetails.firstName}
+        </h1>
         <Button danger onClick={logout} icon={<LogoutOutlined />}>
           {locale.logout}
         </Button>

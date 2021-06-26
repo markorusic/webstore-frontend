@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import { useCustomer } from '../../services/customer-service'
@@ -13,12 +13,7 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 import { locale } from '../../localization'
-
-export interface NavLink {
-  title: string
-  path: string
-  icon?: ReactNode
-}
+import { NavLink } from '../../utils'
 
 const baseItems: NavLink[] = [
   { title: locale.home, path: '/', icon: <HomeOutlined /> },
