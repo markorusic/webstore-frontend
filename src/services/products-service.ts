@@ -1,11 +1,24 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
-import { Page, PageParams, ProductDto, ProductPageDto } from '../types/dto'
+import {
+  Page,
+  PageParams,
+  ProductDto,
+  ProductPageDto,
+  ProductRequestDto
+} from '../types/dto'
 import { http } from '../utils/http'
+import { adminHttp } from './admin-service'
 
 export type ProductFetchParams = PageParams & {
   name?: string
   categoryId?: string
-  sort?: 'price,asc' | 'price,desc' | 'name,asc' | 'name,desc'
+  sort?:
+    | 'price,asc'
+    | 'price,desc'
+    | 'name,asc'
+    | 'name,desc'
+    | 'createdAt,asc'
+    | 'createdAt,desc'
 }
 
 export const productService = {
@@ -28,6 +41,14 @@ export const productService = {
     const { data } = await http.get<ProductDto[]>('/products/findByIds', {
       params: { ids: ids.join(',') }
     })
+    return data
+  },
+  async create(dto: ProductRequestDto) {
+    const { data } = await adminHttp.post<ProductDto>('/products/save', dto)
+    return data
+  },
+  async update(dto: ProductRequestDto) {
+    const { data } = await adminHttp.put<ProductDto>('/products/update', dto)
     return data
   }
 }

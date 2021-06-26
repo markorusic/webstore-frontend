@@ -1,36 +1,26 @@
 import React from 'react'
 import { productService } from '../../../services/products-service'
 import Crud from '../../shared/crud'
-import { SimpleTable } from '../../simple-table'
 import { PageContainer } from '../page-container'
+import { ProductCreateForm } from './product-create-form'
+import { ProductTable } from './product-table'
+import { ProductUpdateForm } from './product-update-form'
 
 export const Products = () => {
   return (
     <PageContainer>
       <Crud
         id="admin-products"
-        entityService={{
-          fetchPage: productService.fetchPage,
-          findById: productService.fetchById,
-          create: (dto: any) => Promise.resolve({} as any),
-          update: (dto: any) => Promise.resolve({} as any)
+        entityService={productService}
+        messages={{
+          title: 'Products',
+          createTitle: 'Create product',
+          updateTitle: 'Update product'
         }}
-        renderTable={tableProps => (
-          <SimpleTable
-            {...tableProps}
-            columns={[
-              {
-                name: 'name',
-                title: 'Name',
-                sorter: true,
-                filters: [
-                  { text: 'Male', value: 'male' },
-                  { text: 'Female', value: 'female' }
-                ]
-              }
-            ]}
-          />
-        )}
+        initialFetchParams={{ sort: 'createdAt,desc', size: 5 }}
+        renderTable={props => <ProductTable {...props} />}
+        renderCreateForm={props => <ProductCreateForm {...props} />}
+        renderUpdateForm={props => <ProductUpdateForm {...props} />}
       />
     </PageContainer>
   )

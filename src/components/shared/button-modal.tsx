@@ -1,12 +1,18 @@
 import { Button, ButtonProps, ModalProps } from 'antd'
 import Modal from 'antd/lib/modal/Modal'
-import { FC, useState } from 'react'
+import { Dispatch, FC, ReactNode, SetStateAction, useState } from 'react'
 
 export interface ButtonModalProps {
   title: string
   buttonProps?: ButtonProps
   modalProps?: ModalProps
+  children:
+    | ReactNode
+    | ((injectedProps: {
+        setShowModal: Dispatch<SetStateAction<boolean>>
+      }) => ReactNode)
 }
+
 export const ButtonModal: FC<ButtonModalProps> = ({
   title,
   buttonProps,
@@ -28,7 +34,8 @@ export const ButtonModal: FC<ButtonModalProps> = ({
         visible={showModal}
         onCancel={() => setShowModal(false)}
       >
-        {children}
+        {/* @ts-ignore */}
+        {typeof children === 'function' ? children({ setShowModal }) : children}
       </Modal>
     </>
   )

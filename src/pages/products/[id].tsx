@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Button, Col, Image, Row } from 'antd'
+import { Button, Col, Image, notification, Row } from 'antd'
 import { PageContainer } from '../../components/customer/page-container'
 import { AsyncContainer } from '../../components/shared/async-container'
 import { useProduct } from '../../services/products-service'
@@ -59,7 +59,10 @@ export const Product = () => {
                   <Button
                     size="large"
                     icon={<ShoppingCartOutlined />}
-                    onClick={() => cart.add(product.id)}
+                    onClick={() => {
+                      cart.add(product.id)
+                      notification.success({ message: 'Added to cart!' })
+                    }}
                   >
                     {locale.addToCart}
                   </Button>

@@ -41,6 +41,10 @@
   font-weight: bold;
 }
 
+.table-img {
+  width: 150px;
+}
+
 .active-item-container {
   background-color: #fff;
   padding: 12px 24px;

@@ -7,10 +7,19 @@ import {
   Formik,
   Form as FormikFrom
 } from 'formik'
-import { Button, ButtonProps, Input, InputProps } from 'antd'
+import {
+  Button,
+  ButtonProps,
+  Input,
+  InputNumber,
+  InputNumberProps,
+  InputProps
+} from 'antd'
 import { TextAreaProps as BaseTextAreaProps } from 'antd/lib/input'
 
-export function Form<T>({ children, ...props }: FormikConfig<T>) {
+export type FormProps<T> = FormikConfig<T>
+
+export function Form<T>({ children, ...props }: FormProps<T>) {
   return (
     <Formik {...props}>
       {formikProps => (
@@ -93,6 +102,23 @@ export const TextAreaInput: FC<TextAreaProps> = ({
   return (
     <FormInputContainer containerClassName={containerClassName} {...props}>
       <Input.TextArea {...field} {...props} />
+    </FormInputContainer>
+  )
+}
+
+export type NumberInputProps = BaseInputProps & InputNumberProps
+export const NumberInput: FC<NumberInputProps> = ({
+  containerClassName,
+  ...props
+}) => {
+  const [field, , helpers] = useField(props.name)
+  return (
+    <FormInputContainer containerClassName={containerClassName} {...props}>
+      <InputNumber
+        {...field}
+        {...props}
+        onChange={value => helpers.setValue(value)}
+      />
     </FormInputContainer>
   )
 }

@@ -132,3 +132,13 @@ export interface ProductReviewRequestDto {
   content: string
   rate: number
 }
+
+export interface ProductRequestDto {
+  id?: string | number
+  name: string
+  price: number
+  photo: string
+  categoryId: number | string
+  description: string
+  photos: string[]
+}

@@ -1,12 +1,16 @@
-import { TableProps } from 'antd'
-import { ComponentType, FC, FunctionComponent, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Page, PageParams } from '../../../types/dto'
-import { SimpleTableProps } from '../../simple-table'
+import { SimpleTableProps } from '../simple-table'
+import { FormProps } from '../form'
 
 export type ID = string | number
 
+export type Identifiable = {
+  id: ID
+}
+
 export interface EntityService<
-  PageItemDto,
+  PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
   UpdateDto = CreateDto & { id: string | number },
@@ -15,31 +19,21 @@ export interface EntityService<
   fetchPage(params: FetchPageParams): Promise<Page<PageItemDto>>
   create(dto: CreateDto): Promise<ItemDto>
   update(dto: UpdateDto): Promise<ItemDto>
-  findById(id: ID): Promise<ItemDto>
+  fetchById(id: ID): Promise<ItemDto>
 }
 
 export interface CrudMessages {
   title: string
   createTitle: string
   updateTitle: string
-  submitText: string
 }
 
-export interface CreateComponentProps<ItemDto> {
-  initialValues: Partial<ItemDto>
-  onSubmit(dto: ItemDto): Promise<ItemDto>
-  submitText?: string
-  submitIcon?: ReactNode
-  successMessage?: string
-  errorMessage?: string
-}
+export type CreateFromProps<T> = Omit<FormProps<Partial<T>>, 'initialValues'>
 
-export interface TableComponentProps<PageItemDto> {
-  stagod?: string
-}
+export type UpdateFromProps<T, K> = CreateFromProps<T> & { activeRecord: K }
 
 export interface CrudProps<
-  PageItemDto,
+  PageItemDto extends Identifiable,
   ItemDto,
   CreateDto,
   UpdateDto = CreateDto & { id: string | number },
@@ -54,8 +48,8 @@ export interface CrudProps<
     FetchPageParams
   >
   messages?: CrudMessages
-  //   CreateComponent: FC<CreateComponentProps<ItemDto>>
-  //   UpdateComponent: FC
-  //   TableComponent: FC<TableComponentProps<PageItemDto>>
+  initialFetchParams?: Partial<FetchPageParams>
   renderTable(props: SimpleTableProps<PageItemDto>): ReactNode
+  renderCreateForm?(props: CreateFromProps<CreateDto>): ReactNode
+  renderUpdateForm?(props: UpdateFromProps<UpdateDto, ItemDto>): ReactNode
 }
