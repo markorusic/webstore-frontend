@@ -62,6 +62,7 @@ export const CustomerOrderList = () => {
                   <ButtonModal
                     title="Order details"
                     buttonProps={{ icon: <UnorderedListOutlined /> }}
+                    modalProps={{ width: 800 }}
                   >
                     <Table
                       rowKey="id"
@@ -83,9 +84,15 @@ export const CustomerOrderList = () => {
                           )
                         },
                         {
+                          title: 'Product ID',
+                          dataIndex: 'productId',
+                          key: 'productId'
+                        },
+                        {
                           title: 'Price',
                           key: 'price',
-                          dataIndex: 'price'
+                          dataIndex: 'price',
+                          render: price => `${price}$`
                         },
                         {
                           title: 'Quantity',
