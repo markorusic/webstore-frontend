@@ -9,6 +9,7 @@ import {
 } from '../../services/product-review-service'
 import { paginationAdapter } from '../../utils/pagination-adapter'
 import { AsyncList } from '../shared/async-list'
+import { useCustomer } from '../../services/customer-service'
 
 export interface ProductReviewListProps {
   params: ProductReviewFetchParams
@@ -19,6 +20,7 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
   params,
   setParams
 }) => {
+  const [customer] = useCustomer()
   const productReviewPageQuery = useProductReviewPage(params)
 
   return (
@@ -32,7 +34,10 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
               <div className="align-center">
                 <Avatar size={32} icon={<UserOutlined />} />
                 <span className="px-8">
-                  {review.customer.firstName} {review.customer.lastName}
+                  {review.customer.firstName} {review.customer.lastName}{' '}
+                  {customer?.user.id === review.customer.id ? (
+                    <span className="font-bold">(Me)</span>
+                  ) : null}
                 </span>
               </div>
               <div>

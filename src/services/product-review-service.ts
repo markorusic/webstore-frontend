@@ -1,6 +1,12 @@
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
-import { Page, PageParams, ProductReviewDto } from '../types/dto'
+import {
+  Page,
+  PageParams,
+  ProductReviewDto,
+  ProductReviewRequestDto
+} from '../types/dto'
 import { http } from '../utils/http'
+import { customerHttp } from './customer-service'
 
 export type ProductReviewFetchParams = PageParams & {
   id: string | number
@@ -16,29 +22,25 @@ export const productReviewService = {
       }
     )
     return data
-    // return {
-    //   ...data,
-    //   content:
-    //     data.content.length > 0
-    //       ? Array.from(new Array(params.size)).map((_, id) => ({
-    //           ...data.content[0],
-    //           customer: {
-    //             ...data.content[0].customer,
-    //             avatar:
-    //               'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-    //           },
-    //           rate: Math.floor(Math.random() * 10),
-    //           content:
-    //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    //           id: id.toString()
-    //         }))
-    //       : data.content
-    // } as Page<ProductReviewDto>
+  },
+  async me() {
+    const { data } = await customerHttp.get<ProductReviewDto[]>(
+      '/product-reviews/me'
+    )
+    return data
+  },
+  async save(dto: ProductReviewRequestDto) {
+    const { data } = await customerHttp.post<ProductReviewDto>(
+      '/product-reviews/save',
+      dto
+    )
+    return data
   }
 }
 
 export const productReviewQueryKeys = {
-  productReviews: 'productReviews'
+  productReviews: 'productReviews',
+  customerRroductReviews: 'customerRroductReviews'
 }
 
 export const useProductReviewPage = (
@@ -55,3 +57,10 @@ export const useProductReviewPage = (
   })
   return query
 }
+
+export const useCustomerProductReviews = () =>
+  useQuery(
+    productReviewQueryKeys.customerRroductReviews,
+    productReviewService.me,
+    { keepPreviousData: true }
+  )
