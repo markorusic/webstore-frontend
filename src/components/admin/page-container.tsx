@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import {
-  CommentOutlined,
   HomeOutlined,
   LogoutOutlined,
   ShoppingCartOutlined,
@@ -30,11 +29,6 @@ const baseItems: NavLink[] = [
     title: locale.orders,
     path: '/admin/orders',
     icon: <ShoppingCartOutlined />
-  },
-  {
-    title: locale.reviews,
-    path: '/admin/product-reviews',
-    icon: <CommentOutlined />
   }
 ]
 
