@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { useAdmin } from '../../services/admin-service'
 import { Home } from '../../pages/admin'
 import { Login } from '../../pages/admin/login'
-import { Products } from './products'
+import { Products } from './product'
 
 export const AdminApp = () => {
   const [admin] = useAdmin()
