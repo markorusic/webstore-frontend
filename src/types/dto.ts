@@ -109,6 +109,14 @@ export interface OrderRequestDto {
 
 export type OrderStatus = 'Pending' | 'Canceled' | 'Shipped'
 
+export interface OrderDetailDto {
+  id: number
+  name: string
+  price: number
+  photo: string
+  quantity: number
+  productId: number
+}
 export interface OrderDto {
   id: number
   shippingAddress: string
@@ -116,14 +124,7 @@ export interface OrderDto {
   createdAt: string
   status: OrderStatus
   customer: UserDto
-  orderDetails: {
-    id: number
-    name: string
-    price: number
-    photo: string
-    quantity: number
-    productId: number
-  }[]
+  orderDetails: OrderDetailDto[]
 }
 
 export interface ProductReviewRequestDto {
@@ -147,4 +148,13 @@ export interface CategoryRequestDto {
   id?: string | number
   name: string
   photo: string
+}
+
+export interface OrderPageItemDto {
+  id: string
+  shippingAddress: String
+  note: String
+  status: OrderStatus
+  createdAt: string
+  customer: UserDto
 }

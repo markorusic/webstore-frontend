@@ -15,6 +15,7 @@ export const locale = {
   cart: 'Cart',
   total: 'Total',
   order: 'Order',
+  orders: 'Orders',
   checkout: 'Checkout',
   emptyCart: 'Your cart is empty.',
   backToStore: 'Back to store',

@@ -9,6 +9,8 @@ import { paginationAdapter } from '../../../utils/pagination-adapter'
 import Modal from 'antd/lib/modal/Modal'
 import { PlusCircleOutlined } from '@ant-design/icons'
 
+const nullRender = () => null
+
 function Crud<
   PageItemDto extends Identifiable,
   ItemDto,
@@ -24,8 +26,8 @@ function Crud<
     updateTitle: 'Update item'
   },
   initialFetchParams = {},
-  renderCreateForm = () => null,
-  renderUpdateForm = () => null,
+  renderCreateForm = nullRender,
+  renderUpdateForm = nullRender,
   renderTable
 }: CrudProps<PageItemDto, ItemDto, CreateDto, UpdateDto, FetchPageParams>) {
   // @ts-ignore
@@ -61,34 +63,37 @@ function Crud<
         onBack={() => window.history.back()}
       />
 
-      <div className="py-8">
-        <ButtonModal
-          title={messages.createTitle}
-          buttonProps={{ type: 'primary', icon: <PlusCircleOutlined /> }}
-          modalProps={{ width: 900, destroyOnClose: true }}
-        >
-          {modal =>
-            renderCreateForm({
-              async onSubmit(values) {
-                try {
-                  await entityService.create(values as CreateDto)
-                  notification.open({
-                    type: 'success',
-                    message: 'Successfully created!'
-                  })
-                  recordsQuery.refetch()
-                  modal.setShowModal(false)
-                } catch (err) {
-                  notification.open({
-                    type: 'error',
-                    message: err?.response?.data?.message ?? 'An error occured!'
-                  })
+      {renderCreateForm !== nullRender && (
+        <div className="py-8">
+          <ButtonModal
+            title={messages.createTitle ?? ''}
+            buttonProps={{ type: 'primary', icon: <PlusCircleOutlined /> }}
+            modalProps={{ width: 900, destroyOnClose: true }}
+          >
+            {modal =>
+              renderCreateForm({
+                async onSubmit(values) {
+                  try {
+                    await entityService.create(values as CreateDto)
+                    notification.open({
+                      type: 'success',
+                      message: 'Successfully created!'
+                    })
+                    recordsQuery.refetch()
+                    modal.setShowModal(false)
+                  } catch (err) {
+                    notification.open({
+                      type: 'error',
+                      message:
+                        err?.response?.data?.message ?? 'An error occured!'
+                    })
+                  }
                 }
-              }
-            })
-          }
-        </ButtonModal>
-      </div>
+              })
+            }
+          </ButtonModal>
+        </div>
+      )}
 
       <div className="py-8">
         <AsyncContainer
@@ -141,39 +146,42 @@ function Crud<
         />
       </div>
 
-      <Modal
-        visible={activeRecordId !== undefined}
-        onCancel={() => setActiveRecordId(undefined)}
-        width={900}
-        destroyOnClose
-        footer={null}
-      >
-        <AsyncContainer
-          data={activeRecordQuery.data}
-          status={activeRecordQuery.status}
-          render={activeRecord =>
-            renderUpdateForm({
-              activeRecord,
-              async onSubmit(values) {
-                try {
-                  await entityService.update(values as UpdateDto)
-                  notification.open({
-                    type: 'success',
-                    message: 'Successfully updated!'
-                  })
-                  activeRecordQuery.refetch()
-                  recordsQuery.refetch()
-                } catch (err) {
-                  notification.open({
-                    type: 'error',
-                    message: err?.response?.data?.message ?? 'An error occured!'
-                  })
+      {renderUpdateForm !== nullRender && (
+        <Modal
+          visible={activeRecordId !== undefined}
+          onCancel={() => setActiveRecordId(undefined)}
+          width={900}
+          destroyOnClose
+          footer={null}
+        >
+          <AsyncContainer
+            data={activeRecordQuery.data}
+            status={activeRecordQuery.status}
+            render={activeRecord =>
+              renderUpdateForm({
+                activeRecord,
+                async onSubmit(values) {
+                  try {
+                    await entityService.update(values as UpdateDto)
+                    notification.open({
+                      type: 'success',
+                      message: 'Successfully updated!'
+                    })
+                    activeRecordQuery.refetch()
+                    recordsQuery.refetch()
+                  } catch (err) {
+                    notification.open({
+                      type: 'error',
+                      message:
+                        err?.response?.data?.message ?? 'An error occured!'
+                    })
+                  }
                 }
-              }
-            })
-          }
-        />
-      </Modal>
+              })
+            }
+          />
+        </Modal>
+      )}
     </div>
   )
 }

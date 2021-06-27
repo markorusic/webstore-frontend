@@ -12,13 +12,50 @@ import { ButtonModal } from '../shared/button-modal'
 import { AsyncButton } from '../shared/async-button'
 import { queryClient } from '../../config/query-clinet'
 import { UnorderedListOutlined } from '@ant-design/icons'
-import { OrderStatus } from '../../types/dto'
+import { OrderDetailDto, OrderStatus } from '../../types/dto'
+import { SimpleTable, SimpleTableProps } from '../shared/simple-table'
 
-const orderStatusColors: Record<OrderStatus, string> = {
+export const orderStatusColors: Record<OrderStatus, string> = {
   Pending: '#1890ff',
   Canceled: 'red',
   Shipped: 'green'
 }
+
+export const OrderDetailsTable = (props: SimpleTableProps<OrderDetailDto>) => (
+  <SimpleTable
+    rowKey="id"
+    {...props}
+    columns={[
+      {
+        title: 'Product',
+        name: 'photo',
+        render: (_, orderDetail) => (
+          <div className="align-center">
+            <Image width={100} src={orderDetail.photo} />
+            <span className="px-8">
+              <Link to={`/products/${orderDetail.productId}`}>
+                {orderDetail.name}
+              </Link>
+            </span>
+          </div>
+        )
+      },
+      {
+        title: 'Product ID',
+        name: 'productId'
+      },
+      {
+        title: 'Price',
+        name: 'price',
+        render: price => `${price}$`
+      },
+      {
+        title: 'Quantity',
+        name: 'quantity'
+      }
+    ]}
+  />
+)
 
 export const CustomerOrderList = () => {
   const ordersQuery = useCustomerOrders()
@@ -64,43 +101,7 @@ export const CustomerOrderList = () => {
                     buttonProps={{ icon: <UnorderedListOutlined /> }}
                     modalProps={{ width: 800 }}
                   >
-                    <Table
-                      rowKey="id"
-                      dataSource={order.orderDetails}
-                      columns={[
-                        {
-                          title: 'Product',
-                          key: 'photo',
-                          dataIndex: 'photo',
-                          render: (_, orderDetail) => (
-                            <div className="align-center">
-                              <Image width={100} src={orderDetail.photo} />
-                              <span className="px-8">
-                                <Link to={`/products/${orderDetail.productId}`}>
-                                  {orderDetail.name}
-                                </Link>
-                              </span>
-                            </div>
-                          )
-                        },
-                        {
-                          title: 'Product ID',
-                          dataIndex: 'productId',
-                          key: 'productId'
-                        },
-                        {
-                          title: 'Price',
-                          key: 'price',
-                          dataIndex: 'price',
-                          render: price => `${price}$`
-                        },
-                        {
-                          title: 'Quantity',
-                          key: 'quantity',
-                          dataIndex: 'quantity'
-                        }
-                      ]}
-                    />
+                    <OrderDetailsTable dataSource={order.orderDetails} />
                   </ButtonModal>
                 )
               },

@@ -4,6 +4,7 @@ import { Menu } from 'antd'
 import {
   HomeOutlined,
   LogoutOutlined,
+  ShoppingCartOutlined,
   ShoppingOutlined,
   UnorderedListOutlined,
   UserOutlined
@@ -23,6 +24,11 @@ const baseItems: NavLink[] = [
     title: locale.categories,
     path: '/admin/categories',
     icon: <UnorderedListOutlined />
+  },
+  {
+    title: locale.orders,
+    path: '/admin/orders',
+    icon: <ShoppingCartOutlined />
   }
 ]
 

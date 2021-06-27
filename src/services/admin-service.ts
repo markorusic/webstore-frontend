@@ -72,6 +72,7 @@ export const useAdmin = (): UseAdminReturnType => {
     if (admin) {
       localStorage.setItem(adminKeys.admin, JSON.stringify(admin))
       adminHttp.interceptors.request.use(request => {
+        // TODO: fix token init
         request.headers[env.API_TOKEN_HEADER] = admin.token
         return request
       })

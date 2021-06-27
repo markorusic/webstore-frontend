@@ -17,15 +17,15 @@ export interface EntityService<
   FetchPageParams extends PageParams = PageParams
 > {
   fetchPage(params: FetchPageParams): Promise<Page<PageItemDto>>
+  fetchById(id: ID): Promise<ItemDto>
   create(dto: CreateDto): Promise<ItemDto>
   update(dto: UpdateDto): Promise<ItemDto>
-  fetchById(id: ID): Promise<ItemDto>
 }
 
 export interface CrudMessages {
-  title: string
-  createTitle: string
-  updateTitle: string
+  title?: string
+  createTitle?: string
+  updateTitle?: string
 }
 
 export type CreateFromProps<T> = Omit<FormProps<Partial<T>>, 'initialValues'>
