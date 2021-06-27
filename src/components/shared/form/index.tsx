@@ -74,9 +74,16 @@ export const FormInputContainer: FC<BaseInputProps> = ({
 export const SubmitButton: FC<ButtonProps> = props => {
   const form = useFormikContext()
   return (
-    <Button {...props} htmlType="submit" loading={form.isSubmitting}>
-      {props.children ?? 'Submit'}
-    </Button>
+    <div className="py-8">
+      <Button
+        type="primary"
+        {...props}
+        htmlType="submit"
+        loading={form.isSubmitting}
+      >
+        {props.children ?? 'Submit'}
+      </Button>
+    </div>
   )
 }
 

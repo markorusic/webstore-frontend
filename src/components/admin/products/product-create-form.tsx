@@ -57,10 +57,7 @@ export const ProductCreateForm = (
             .then(page => page.content)
         }
       />
-
-      <div className="py-8">
-        <SubmitButton>Submit</SubmitButton>
-      </div>
+      <SubmitButton />
     </Form>
   )
 }

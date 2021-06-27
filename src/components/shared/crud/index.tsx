@@ -7,6 +7,7 @@ import { QueryKey, useQuery } from 'react-query'
 import { AsyncContainer } from '../async-container'
 import { paginationAdapter } from '../../../utils/pagination-adapter'
 import Modal from 'antd/lib/modal/Modal'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
 function Crud<
   PageItemDto extends Identifiable,
@@ -63,6 +64,7 @@ function Crud<
       <div className="py-8">
         <ButtonModal
           title={messages.createTitle}
+          buttonProps={{ type: 'primary', icon: <PlusCircleOutlined /> }}
           modalProps={{ width: 900, destroyOnClose: true }}
         >
           {modal =>

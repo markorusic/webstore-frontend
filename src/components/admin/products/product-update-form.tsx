@@ -48,9 +48,7 @@ export const ProductUpdateForm = ({
         }
       />
 
-      <div className="py-8">
-        <SubmitButton>Submit</SubmitButton>
-      </div>
+      <SubmitButton />
     </Form>
   )
 }
