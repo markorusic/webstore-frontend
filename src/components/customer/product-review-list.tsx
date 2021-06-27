@@ -79,6 +79,9 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
                             content:
                               'Are you sure you want to remove this review?',
                             okText: 'Confirm',
+                            onCancel() {
+                              resolve('')
+                            },
                             async onOk() {
                               try {
                                 await productReviewService.delete(review.id)
