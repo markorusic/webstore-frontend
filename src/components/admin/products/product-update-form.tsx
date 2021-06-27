@@ -20,7 +20,6 @@ export const ProductUpdateForm = ({
   return (
     <Form
       {...props}
-      onSubmit={console.log}
       validationSchema={productValidationSchema}
       initialValues={{
         id: activeRecord.id,

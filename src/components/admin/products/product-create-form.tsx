@@ -27,7 +27,6 @@ export const ProductCreateForm = (
   return (
     <Form
       {...props}
-      onSubmit={console.log}
       validationSchema={productValidationSchema}
       initialValues={{
         name: '',
