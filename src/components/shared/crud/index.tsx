@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { notification, PageHeader } from 'antd'
+import { Button, notification, PageHeader } from 'antd'
 import { ButtonModal } from '../button-modal'
 import { CrudProps, ID, Identifiable, RenderItemUtils } from './types'
 import { PageParams } from '../../../types/dto'
@@ -7,7 +7,7 @@ import { QueryKey, useQuery } from 'react-query'
 import { AsyncContainer } from '../async-container'
 import { paginationAdapter } from '../../../utils/pagination-adapter'
 import Modal from 'antd/lib/modal/Modal'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons'
 import { tableOnChangeAdapter } from './utils'
 
 const nullRender = () => null
@@ -106,30 +106,40 @@ function Crud<
         <AsyncContainer
           data={recordsQuery.data}
           status={recordsQuery.status}
-          render={dataPage =>
-            renderTable({
-              ...renderItemUtils,
-              rowKey: 'id',
-              dataSource: dataPage.content,
-              onChange: tableOnChangeAdapter(newParams => {
-                // @ts-ignore
-                setTableParams(params => ({ ...params, ...newParams }))
-              }),
-              pagination: {
-                ...paginationAdapter({
-                  pageSize: tableParams.size,
-                  current: tableParams.page,
-                  total: recordsQuery.data?.totalElements
+          render={recordsPage => (
+            <div>
+              <div style={{ textAlign: 'right' }}>
+                <Button
+                  type="text"
+                  loading={recordsQuery.isLoading}
+                  icon={<ReloadOutlined />}
+                  onClick={() => recordsQuery.refetch()}
+                />
+              </div>
+              {renderTable({
+                ...renderItemUtils,
+                rowKey: 'id',
+                dataSource: recordsPage.content,
+                onChange: tableOnChangeAdapter(newParams => {
+                  // @ts-ignore
+                  setTableParams(params => ({ ...params, ...newParams }))
+                }),
+                pagination: {
+                  ...paginationAdapter({
+                    pageSize: tableParams.size,
+                    current: tableParams.page,
+                    total: recordsQuery.data?.totalElements
+                  })
+                },
+                rowClassName: 'cursor-pointer',
+                onRow: record => ({
+                  onClick() {
+                    setActiveRecordId(record.id)
+                  }
                 })
-              },
-              rowClassName: 'cursor-pointer',
-              onRow: record => ({
-                onClick() {
-                  setActiveRecordId(record.id)
-                }
-              })
-            })
-          }
+              })}
+            </div>
+          )}
         />
       </div>
 
