@@ -21,7 +21,7 @@ export const Login = () => {
   }
 
   return (
-    <div className="py-16 page-content-container">
+    <div className="p-16 page-content-container">
       <h1>{locale.admin.login}</h1>
       <Form
         initialValues={initialValues}

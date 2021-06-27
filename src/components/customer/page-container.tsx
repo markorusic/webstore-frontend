@@ -40,7 +40,7 @@ export const PageContainer: FC = ({ children }) => {
   const location = useLocation()
 
   return (
-    <div className="page-content-container">
+    <div className="page-content-container px-8">
       <div className="customer-top-menu-container">
         <Menu selectedKeys={[location.pathname]} mode="horizontal">
           {baseItems.map(item => (

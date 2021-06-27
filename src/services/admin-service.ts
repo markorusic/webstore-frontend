@@ -1,5 +1,5 @@
-import { AxiosInstance } from 'axios'
-import { useCallback, useEffect } from 'react'
+import axios from 'axios'
+import { useCallback } from 'react'
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
@@ -11,10 +11,12 @@ import {
   LoginResponseDto,
   UserDto
 } from '../types/dto'
-import { identity } from '../utils'
+import { AuthService } from '../utils'
 import { http } from '../utils/http'
 
-export const adminHttp = { ...http } as AxiosInstance
+export const adminHttp = axios.create({
+  baseURL: env.API_BASE_URL
+})
 
 export const adminService = {
   async login(dto: LoginRequestDto) {
@@ -57,37 +59,24 @@ type UseAdminReturnType = [
   }
 ]
 
+const adminAuthService = new AuthService(adminKeys.admin, adminHttp)
+
+adminAuthService.init()
+
 export const useAdmin = (): UseAdminReturnType => {
   const [admin, setAdmin] = useAdminState()
 
   const login = async (dto: LoginRequestDto) => {
     const admin = await adminService.login(dto)
+    adminAuthService.login(admin)
     setAdmin(admin)
     return admin
   }
 
-  const logout = useCallback(() => setAdmin(undefined), [setAdmin])
-
-  useEffect(() => {
-    if (admin) {
-      localStorage.setItem(adminKeys.admin, JSON.stringify(admin))
-      adminHttp.interceptors.request.use(request => {
-        // TODO: fix token init
-        request.headers[env.API_TOKEN_HEADER] = admin.token
-        return request
-      })
-
-      adminHttp.interceptors.response.use(identity, error => {
-        if (401 === error.response.status) {
-          logout()
-        } else {
-          return Promise.reject(error)
-        }
-      })
-    } else {
-      localStorage.removeItem(adminKeys.admin)
-    }
-  }, [admin, logout])
+  const logout = useCallback(() => {
+    setAdmin(undefined)
+    adminAuthService.logout()
+  }, [setAdmin])
 
   return [admin, { login, logout }]
 }

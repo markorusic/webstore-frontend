@@ -1,5 +1,5 @@
-import { AxiosInstance } from 'axios'
-import { useCallback, useEffect } from 'react'
+import axios from 'axios'
+import { useCallback } from 'react'
 import { QueryKey, useQuery, UseQueryOptions } from 'react-query'
 import { createGlobalState } from 'react-use'
 import { env } from '../config/env'
@@ -12,10 +12,12 @@ import {
   PageParams,
   UserLogAction
 } from '../types/dto'
-import { identity } from '../utils'
+import { AuthService } from '../utils'
 import { http } from '../utils/http'
 
-export const customerHttp = { ...http } as AxiosInstance
+export const customerHttp = axios.create({
+  baseURL: env.API_BASE_URL
+})
 
 export const customerService = {
   async register(dto: CustomerRegisterRequestDto) {
@@ -67,16 +69,24 @@ type UseCustomerReturnType = [
   }
 ]
 
+const customerAuthSerivce = new AuthService(customerKeys.customer, customerHttp)
+
+customerAuthSerivce.init()
+
 export const useCustomer = (): UseCustomerReturnType => {
   const [customer, setCustomer] = useCustomerState()
 
   const login = async (dto: LoginRequestDto) => {
     const customer = await customerService.login(dto)
+    customerAuthSerivce.login(customer)
     setCustomer(customer)
     return customer
   }
 
-  const logout = useCallback(() => setCustomer(undefined), [setCustomer])
+  const logout = useCallback(() => {
+    setCustomer(undefined)
+    customerAuthSerivce.logout()
+  }, [setCustomer])
 
   const update = async (dto: UserDto) => {
     const updatedCustomer = await customerService.update(dto)
@@ -85,26 +95,6 @@ export const useCustomer = (): UseCustomerReturnType => {
     )
     return updatedCustomer
   }
-
-  useEffect(() => {
-    if (customer) {
-      localStorage.setItem(customerKeys.customer, JSON.stringify(customer))
-      customerHttp.interceptors.request.use(request => {
-        request.headers[env.API_TOKEN_HEADER] = customer.token
-        return request
-      })
-
-      customerHttp.interceptors.response.use(identity, error => {
-        if (401 === error.response.status) {
-          logout()
-        } else {
-          return Promise.reject(error)
-        }
-      })
-    } else {
-      localStorage.removeItem(customerKeys.customer)
-    }
-  }, [customer, logout])
 
   return [customer, { login, update, logout }]
 }
