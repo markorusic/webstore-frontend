@@ -21,7 +21,7 @@ export const uploadFile = (file: Blob | string | RcFile) => {
 type PhotoInputProps = UploadProps & BaseInputProps
 
 export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
-  const [field, , helpers] = useField<string>(name)
+  const [field, , helpers] = useField<string | undefined>(name)
   const [loading, setLoading] = useState(false)
   return (
     <FormInputContainer name={name} label={label}>
@@ -29,7 +29,20 @@ export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
-        showUploadList={false}
+        maxCount={1}
+        onRemove={() => helpers.setValue(undefined)}
+        fileList={
+          field.value
+            ? [
+                {
+                  uid: field.value,
+                  url: field.value,
+                  name: 'stagod',
+                  status: 'done'
+                }
+              ]
+            : []
+        }
         customRequest={async ({ file }) => {
           try {
             setLoading(true)
@@ -46,25 +59,10 @@ export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
         }}
         {...props}
       >
-        {field.value ? (
-          <div>
-            <img
-              alt=""
-              src={field.value}
-              style={{
-                width: '100%',
-                height: 'auto',
-                overflow: 'hidden',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
-        ) : (
-          <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </div>
-        )}
+        <div>
+          {loading ? <LoadingOutlined /> : <PlusOutlined />}
+          <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
       </Upload>
     </FormInputContainer>
   )
