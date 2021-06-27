@@ -14,7 +14,7 @@ import { paginationAdapter } from '../../utils/pagination-adapter'
 import { useURLQuery } from '../../utils/use-url-query'
 
 export const Products = () => {
-  const urlQuery = useURLQuery<ProductFetchParams>()
+  const urlQuery = useURLQuery<ProductFetchParams>({ sort: 'createdAt,desc' })
   const categoriesQuery = useCategories()
   const productsPageQuery = useProductPage({
     page: 0,
@@ -25,7 +25,6 @@ export const Products = () => {
   return (
     <PageContainer>
       <h1>{locale.products}</h1>
-
       <div className="space-between">
         <AsyncList
           data={categoriesQuery.data}
@@ -57,6 +56,8 @@ export const Products = () => {
           defaultValue={urlQuery.params.sort}
           onChange={value => urlQuery.setParam('sort', value)}
           items={[
+            { title: 'Latest ', value: 'createdAt,desc' },
+            { title: 'Oldest ', value: 'createdAt,asc' },
             { title: 'Price Descending ', value: 'price,desc' },
             { title: 'Price Ascending ', value: 'price,asc' },
             { title: 'Name Descending ', value: 'name,desc' },
