@@ -29,6 +29,11 @@ const baseItems: NavLink[] = [
     title: locale.orders,
     path: '/admin/orders',
     icon: <ShoppingCartOutlined />
+  },
+  {
+    title: locale.customers,
+    path: '/admin/customers',
+    icon: <UserOutlined />
   }
 ]
 

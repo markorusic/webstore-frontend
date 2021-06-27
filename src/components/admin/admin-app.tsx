@@ -6,6 +6,7 @@ import { Login } from '../../pages/admin/login'
 import { Products } from './product'
 import { Categories } from './category'
 import { Orders } from './order'
+import { Customers } from './customer'
 
 export const AdminApp = () => {
   const [admin] = useAdmin()
@@ -24,6 +25,9 @@ export const AdminApp = () => {
           </Route>
           <Route path="/admin/orders">
             <Orders />
+          </Route>
+          <Route path="/admin/customers">
+            <Customers />
           </Route>
         </>
       ) : (

@@ -2,6 +2,7 @@ export const locale = {
   home: 'Home',
   welcome: 'Welcome',
   products: 'Products',
+  customers: 'Customers',
   reviews: 'Reviews',
   addToCart: 'Add to cart',
   categories: 'Categories',
