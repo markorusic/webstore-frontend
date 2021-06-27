@@ -9,6 +9,7 @@ import {
   TextAreaInput,
   TextInput
 } from '../../shared/form'
+import { PhotoInput } from '../../shared/form/photo-input'
 import { requiredString } from './validation'
 
 export const ProductCreateForm = (
@@ -37,7 +38,8 @@ export const ProductCreateForm = (
       <TextInput name="name" label="Name" />
       <TextAreaInput name="description" label="Description" />
       <NumberInput name="price" label="Price" min={0} />
-      <TextInput name="photo" label="Photo" />
+      {/* <TextInput name="photo" label="Photo" /> */}
+      <PhotoInput name="photo" label="Photo" />
 
       <div className="py-8">
         <SubmitButton>Submit</SubmitButton>

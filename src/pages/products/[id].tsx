@@ -58,6 +58,7 @@ export const Product = () => {
                 <div className="py-16">
                   <Button
                     size="large"
+                    type="primary"
                     icon={<ShoppingCartOutlined />}
                     onClick={() => {
                       cart.add(product.id)
