@@ -69,8 +69,8 @@ function Crud<
         onBack={() => window.history.back()}
       />
 
-      {renderCreateForm !== nullRender && (
-        <div className="py-8">
+      <div className="pt-8 space-between">
+        {renderCreateForm !== nullRender ? (
           <ButtonModal
             title={messages.createTitle ?? ''}
             buttonProps={{ type: 'primary', icon: <PlusCircleOutlined /> }}
@@ -99,47 +99,46 @@ function Crud<
               })
             }
           </ButtonModal>
-        </div>
-      )}
+        ) : (
+          <div />
+        )}
+
+        <Button
+          type="text"
+          loading={recordsQuery.isLoading}
+          icon={<ReloadOutlined />}
+          onClick={() => recordsQuery.refetch()}
+        />
+      </div>
 
       <div className="py-8">
         <AsyncContainer
           data={recordsQuery.data}
           status={recordsQuery.status}
-          render={recordsPage => (
-            <div>
-              <div style={{ textAlign: 'right' }}>
-                <Button
-                  type="text"
-                  loading={recordsQuery.isLoading}
-                  icon={<ReloadOutlined />}
-                  onClick={() => recordsQuery.refetch()}
-                />
-              </div>
-              {renderTable({
-                ...renderItemUtils,
-                rowKey: 'id',
-                dataSource: recordsPage.content,
-                onChange: tableOnChangeAdapter(newParams => {
-                  // @ts-ignore
-                  setTableParams(params => ({ ...params, ...newParams }))
-                }),
-                pagination: {
-                  ...paginationAdapter({
-                    pageSize: tableParams.size,
-                    current: tableParams.page,
-                    total: recordsQuery.data?.totalElements
-                  })
-                },
-                rowClassName: 'cursor-pointer',
-                onRow: record => ({
-                  onClick() {
-                    setActiveRecordId(record.id)
-                  }
+          render={recordsPage =>
+            renderTable({
+              ...renderItemUtils,
+              rowKey: 'id',
+              dataSource: recordsPage.content,
+              onChange: tableOnChangeAdapter(newParams => {
+                // @ts-ignore
+                setTableParams(params => ({ ...params, ...newParams }))
+              }),
+              pagination: {
+                ...paginationAdapter({
+                  pageSize: tableParams.size,
+                  current: tableParams.page,
+                  total: recordsQuery.data?.totalElements
                 })
-              })}
-            </div>
-          )}
+              },
+              rowClassName: 'cursor-pointer',
+              onRow: record => ({
+                onClick() {
+                  setActiveRecordId(record.id)
+                }
+              })
+            })
+          }
         />
       </div>
 
