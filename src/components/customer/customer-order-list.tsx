@@ -1,4 +1,4 @@
-import { Table, Image, Modal } from 'antd'
+import { Table, Image, Modal, Button } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
@@ -11,7 +11,7 @@ import {
 import { ButtonModal } from '../shared/button-modal'
 import { AsyncButton } from '../shared/async-button'
 import { queryClient } from '../../config/query-clinet'
-import { UnorderedListOutlined } from '@ant-design/icons'
+import { ReloadOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { OrderDetailDto, OrderStatus } from '../../types/dto'
 import { SimpleTable, SimpleTableProps } from '../shared/simple-table'
 
@@ -65,6 +65,14 @@ export const CustomerOrderList = () => {
       status={ordersQuery.status}
       render={orders => (
         <div>
+          <div style={{ textAlign: 'right' }}>
+            <Button
+              type="text"
+              loading={ordersQuery.isLoading}
+              icon={<ReloadOutlined />}
+              onClick={() => ordersQuery.refetch()}
+            />
+          </div>
           <Table
             rowKey="id"
             dataSource={orders}

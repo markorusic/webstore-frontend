@@ -52,6 +52,12 @@ export const productReviewService = {
       dto
     )
     return data
+  },
+  async delete(id: string | number) {
+    const { data } = await customerHttp.delete('/product-reviews/delete', {
+      params: { id }
+    })
+    return data
   }
 }
 

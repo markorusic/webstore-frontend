@@ -3,13 +3,15 @@ import {
   UserOutlined,
   StarFilled,
   StarOutlined,
-  EditOutlined
+  EditOutlined,
+  CloseOutlined
 } from '@ant-design/icons'
-import { Pagination } from 'antd'
+import { Modal, notification, Pagination } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
 import dayjs from 'dayjs'
 import {
   ProductReviewFetchParams,
+  productReviewQueryKeys,
   productReviewService,
   useProductReviewPage
 } from '../../services/product-review-service'
@@ -18,6 +20,8 @@ import { AsyncList } from '../shared/async-list'
 import { useCustomer } from '../../services/customer-service'
 import { ButtonModal } from '../shared/button-modal'
 import { ProductReviewForm } from './product-review-form'
+import { AsyncButton } from '../shared/async-button'
+import { queryClient } from '../../config/query-clinet'
 
 export interface ProductReviewListProps {
   params: ProductReviewFetchParams
@@ -48,21 +52,61 @@ export const ProductReviewList: FC<ProductReviewListProps> = ({
                 </div>
 
                 {customer?.user.id === review.customer.id ? (
-                  <ButtonModal
-                    title="Update review"
-                    modalProps={{ destroyOnClose: true }}
-                    buttonProps={{ icon: <EditOutlined /> }}
-                  >
-                    <ProductReviewForm
-                      initialValues={{
-                        id: review.id,
-                        productId: review.productId.toString(),
-                        rate: review.rate,
-                        content: review.content
-                      }}
-                      onSubmit={productReviewService.update}
-                    />
-                  </ButtonModal>
+                  <div>
+                    <ButtonModal
+                      title="Update review"
+                      modalProps={{ destroyOnClose: true }}
+                      buttonProps={{ icon: <EditOutlined /> }}
+                    >
+                      <ProductReviewForm
+                        initialValues={{
+                          id: review.id,
+                          productId: review.productId.toString(),
+                          rate: review.rate,
+                          content: review.content
+                        }}
+                        onSubmit={productReviewService.update}
+                      />
+                    </ButtonModal>
+
+                    <AsyncButton
+                      className="ml-8"
+                      danger
+                      icon={<CloseOutlined />}
+                      asyncFn={() =>
+                        new Promise((resolve, reject) => {
+                          Modal.confirm({
+                            content:
+                              'Are you sure you want to remove this review?',
+                            okText: 'Confirm',
+                            async onOk() {
+                              try {
+                                await productReviewService.delete(review.id)
+                                queryClient.refetchQueries(
+                                  productReviewQueryKeys.productReviews,
+                                  {
+                                    active: true
+                                  }
+                                )
+                                queryClient.refetchQueries(
+                                  productReviewQueryKeys.customerRroductReviews,
+                                  { active: true }
+                                )
+                                notification.success({
+                                  message: 'Successfully deleted review!'
+                                })
+                                resolve('')
+                              } catch (err) {
+                                reject(err)
+                              }
+                            }
+                          })
+                        })
+                      }
+                    >
+                      Delete review
+                    </AsyncButton>
+                  </div>
                 ) : null}
               </div>
               <div>
