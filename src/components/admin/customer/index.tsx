@@ -1,9 +1,11 @@
+import { Tabs } from 'antd'
 import React from 'react'
 import { adminHttp } from '../../../services/admin-service'
 import { Page, PageParams, UserDto } from '../../../types/dto'
 import Crud from '../../shared/crud'
 import { ID } from '../../shared/crud/types'
 import { PageContainer } from '../page-container'
+import { CustomerActionTable } from './customer-action-table'
 import { CustomerCreateForm } from './customer-create-form'
 import { CustomerTable } from './customer-table'
 import { CustomerUpdateForm } from './customer-update-form'
@@ -59,7 +61,16 @@ export const Customers = () => {
         }}
         renderTable={props => <CustomerTable {...props} />}
         renderCreateForm={props => <CustomerCreateForm {...props} />}
-        renderUpdateForm={props => <CustomerUpdateForm {...props} />}
+        renderUpdateForm={props => (
+          <Tabs>
+            <Tabs.TabPane tab="Info" key="info">
+              <CustomerUpdateForm {...props} />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Action history" key="actions">
+              <CustomerActionTable />
+            </Tabs.TabPane>
+          </Tabs>
+        )}
       />
     </PageContainer>
   )
