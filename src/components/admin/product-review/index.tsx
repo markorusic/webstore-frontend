@@ -5,6 +5,7 @@ import { emptyEntityService } from '../../shared/crud/utils'
 import { SimpleTable } from '../../shared/simple-table'
 import { PageContainer } from '../page-container'
 import { productReviewService } from '../../../services/product-review-service'
+import { Link } from 'react-router-dom'
 
 export const ProductReviews = () => {
   return (
@@ -24,6 +25,16 @@ export const ProductReviews = () => {
                 sorter: true
               },
               {
+                name: 'productId',
+                title: 'Product ID',
+                sorter: true,
+                render: (_, review) => (
+                  <Link to={`/products/${review.productId}`}>
+                    {review.productId}
+                  </Link>
+                )
+              },
+              {
                 name: 'customer',
                 title: 'Customer',
                 render: (_, review) =>
@@ -37,7 +48,7 @@ export const ProductReviews = () => {
               {
                 name: 'content',
                 title: 'Content',
-                width: 500
+                width: 400
               },
               {
                 name: 'updatedAt',
