@@ -54,11 +54,11 @@ function Crud<
   )
 
   return (
-    <div className="px-8 py-8">
+    <div>
       <PageHeader
         style={{ padding: 0 }}
         title={messages.title}
-        onBack={window.history.back}
+        onBack={() => window.history.back()}
       />
 
       <div className="py-8">
@@ -90,7 +90,7 @@ function Crud<
         </ButtonModal>
       </div>
 
-      <div className="py-16">
+      <div className="py-8">
         <AsyncContainer
           data={recordsQuery.data}
           status={recordsQuery.status}

@@ -53,7 +53,7 @@ export const PageContainer: FC = ({ children }) => {
           ))}
         </Menu>
 
-        <div className="w-100">{children}</div>
+        <div className="w-100 p-16">{children}</div>
       </div>
     </div>
   )
