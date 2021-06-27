@@ -142,3 +142,9 @@ export interface ProductRequestDto {
   description: string
   photos: string[]
 }
+
+export interface CategoryRequestDto {
+  id?: string | number
+  name: string
+  photo: string
+}

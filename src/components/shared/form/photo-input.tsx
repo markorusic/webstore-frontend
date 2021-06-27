@@ -30,7 +30,7 @@ export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
         listType="picture-card"
         className="avatar-uploader"
         maxCount={1}
-        onRemove={() => helpers.setValue(undefined)}
+        onRemove={() => helpers.setValue('')}
         fileList={
           field.value
             ? [
