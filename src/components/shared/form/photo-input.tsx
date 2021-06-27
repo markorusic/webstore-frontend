@@ -22,7 +22,7 @@ export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
             const formData = new FormData()
             formData.append('file', file)
             setLoading(true)
-            const path = await adminHttp.post<string>(
+            const {data} = await adminHttp.post<string>(
               '/file-upload',
               formData,
               {
@@ -31,7 +31,7 @@ export const PhotoInput = ({ name, label, ...props }: PhotoInputProps) => {
                 }
               }
             )
-            helpers.setValue(path)
+            helpers.setValue(data)
             notification.success({ message: 'Successfully uploaded!' })
           } catch (err) {
             notification.error({
