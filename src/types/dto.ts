@@ -107,7 +107,11 @@ export interface OrderRequestDto {
   }[]
 }
 
-export type OrderStatus = 'Pending' | 'Canceled' | 'Shipped'
+export enum OrderStatus {
+  Pending = 'Pending',
+  Canceled = 'Canceled',
+  Shipped = 'Shipped'
+}
 
 export interface OrderDetailDto {
   id: number

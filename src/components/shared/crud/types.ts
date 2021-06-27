@@ -28,9 +28,19 @@ export interface CrudMessages {
   updateTitle?: string
 }
 
-export type CreateFromProps<T> = Omit<FormProps<Partial<T>>, 'initialValues'>
+export type RenderItemUtils = {
+  refreshRecords(): void
+  refreshActiveRecord(): void
+}
 
-export type UpdateFromProps<T, K> = CreateFromProps<T> & { activeRecord: K }
+export type RecordTableProps<T> = SimpleTableProps<T> & RenderItemUtils
+
+export type CreateFromProps<T> = Omit<FormProps<Partial<T>>, 'initialValues'> &
+  RenderItemUtils
+
+export type UpdateFromProps<T, K> = CreateFromProps<T> & {
+  activeRecord: K
+} & RenderItemUtils
 
 export interface CrudProps<
   PageItemDto extends Identifiable,
@@ -49,7 +59,7 @@ export interface CrudProps<
   >
   messages?: CrudMessages
   initialFetchParams?: Partial<FetchPageParams>
-  renderTable(props: SimpleTableProps<PageItemDto>): ReactNode
+  renderTable(props: RecordTableProps<PageItemDto>): ReactNode
   renderCreateForm?(props: CreateFromProps<CreateDto>): ReactNode
   renderUpdateForm?(props: UpdateFromProps<UpdateDto, ItemDto>): ReactNode
 }

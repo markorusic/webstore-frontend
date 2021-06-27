@@ -12,6 +12,7 @@ import { emptyEntityService } from '../../shared/crud/utils'
 import { Form, FormInputContainer, SubmitButton } from '../../shared/form'
 import { SimpleTable } from '../../shared/simple-table'
 import { PageContainer } from '../page-container'
+import { OrderStatus } from '../../../types/dto'
 
 export const Orders = () => {
   return (
@@ -65,13 +66,23 @@ export const Orders = () => {
         )}
         renderUpdateForm={props => (
           <Tabs>
-            <Tabs.TabPane tab="Basic info" key="order-info">
-              <pre>{JSON.stringify(props.activeRecord, null, 2)}</pre>
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Details" key="details">
-              <OrderDetailsTable
-                dataSource={props.activeRecord?.orderDetails}
-              />
+            <Tabs.TabPane tab="Order details" key="details">
+              <div>
+                Total:{' '}
+                <span className="font-bold">
+                  {' '}
+                  {props.activeRecord?.orderDetails.reduce(
+                    (total, item) => total + item.price,
+                    0
+                  )}
+                  {'$'}
+                </span>
+                <div className="py-8">
+                  <OrderDetailsTable
+                    dataSource={props.activeRecord?.orderDetails}
+                  />
+                </div>
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Update status" key="chagne-status">
               <Form
@@ -89,6 +100,7 @@ export const Orders = () => {
                       }
                     )
                     .then(() => {
+                      props.refreshRecords()
                       notification.success({
                         message: 'Successfully updated order status!'
                       })
@@ -111,9 +123,13 @@ export const Orders = () => {
                         }
                       >
                         <Space direction="vertical">
-                          <Radio value="Pending">Pending</Radio>
-                          <Radio value="Canceled">Canceled</Radio>
-                          <Radio value="Shipped">Shipped</Radio>
+                          {Object.keys(OrderStatus).map(key => (
+                            // @ts-ignore
+                            <Radio key={key} value={OrderStatus[key]}>
+                              {/* @ts-ignore */}
+                              {OrderStatus[key]}
+                            </Radio>
+                          ))}
                         </Space>
                       </Radio.Group>
                     </FormInputContainer>

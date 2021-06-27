@@ -16,9 +16,9 @@ import { OrderDetailDto, OrderStatus } from '../../types/dto'
 import { SimpleTable, SimpleTableProps } from '../shared/simple-table'
 
 export const orderStatusColors: Record<OrderStatus, string> = {
-  Pending: '#1890ff',
-  Canceled: 'red',
-  Shipped: 'green'
+  [OrderStatus.Pending]: '#1890ff',
+  [OrderStatus.Canceled]: 'red',
+  [OrderStatus.Shipped]: 'green'
 }
 
 export const OrderDetailsTable = (props: SimpleTableProps<OrderDetailDto>) => (

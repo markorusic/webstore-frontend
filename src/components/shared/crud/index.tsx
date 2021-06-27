@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { notification, PageHeader } from 'antd'
 import { ButtonModal } from '../button-modal'
-import { CrudProps, ID, Identifiable } from './types'
+import { CrudProps, ID, Identifiable, RenderItemUtils } from './types'
 import { PageParams } from '../../../types/dto'
 import { QueryKey, useQuery } from 'react-query'
 import { AsyncContainer } from '../async-container'
@@ -55,6 +55,11 @@ function Crud<
     }
   )
 
+  const renderItemUtils: RenderItemUtils = {
+    refreshRecords: () => recordsQuery.refetch(),
+    refreshActiveRecord: () => activeRecordQuery.refetch()
+  }
+
   return (
     <div>
       <PageHeader
@@ -72,6 +77,7 @@ function Crud<
           >
             {modal =>
               renderCreateForm({
+                ...renderItemUtils,
                 async onSubmit(values) {
                   try {
                     await entityService.create(values as CreateDto)
@@ -101,6 +107,7 @@ function Crud<
           status={recordsQuery.status}
           render={dataPage =>
             renderTable({
+              ...renderItemUtils,
               rowKey: 'id',
               dataSource: dataPage.content,
               onChange: (pagination, filters, sorter) => {
@@ -159,6 +166,7 @@ function Crud<
             status={activeRecordQuery.status}
             render={activeRecord =>
               renderUpdateForm({
+                ...renderItemUtils,
                 activeRecord,
                 async onSubmit(values) {
                   try {
