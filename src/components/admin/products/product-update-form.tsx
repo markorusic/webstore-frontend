@@ -10,6 +10,7 @@ import {
   TextInput
 } from '../../shared/form'
 import { AutocompleteInput } from '../../shared/form/autocomplete-input'
+import { GalleryInput } from '../../shared/form/gallery-input'
 import { PhotoInput } from '../../shared/form/photo-input'
 import { productValidationSchema } from './product-create-form'
 
@@ -32,9 +33,6 @@ export const ProductUpdateForm = ({
       }}
     >
       <TextInput name="name" label="Name" />
-      <TextAreaInput name="description" label="Description" />
-      <NumberInput name="price" label="Price" min={1} />
-      <PhotoInput name="photo" label="Photo" />
       <AutocompleteInput
         name="categoryId"
         label="Category"
@@ -46,7 +44,10 @@ export const ProductUpdateForm = ({
             .then(page => page.content)
         }
       />
-
+      <TextAreaInput name="description" label="Description" />
+      <NumberInput name="price" label="Price" min={1} />
+      <PhotoInput name="photo" label="Main photo" />
+      <GalleryInput name="photos" label="Gallery" />
       <SubmitButton />
     </Form>
   )

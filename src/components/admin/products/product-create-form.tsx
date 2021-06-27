@@ -11,6 +11,7 @@ import {
   TextInput
 } from '../../shared/form'
 import { AutocompleteInput } from '../../shared/form/autocomplete-input'
+import { GalleryInput } from '../../shared/form/gallery-input'
 import { PhotoInput } from '../../shared/form/photo-input'
 
 export const productValidationSchema = yup.object({
@@ -18,7 +19,8 @@ export const productValidationSchema = yup.object({
   description: yup.string().required(),
   photo: yup.string().required(),
   categoryId: yup.number().required(),
-  price: yup.number().positive().required()
+  price: yup.number().positive().required(),
+  photos: yup.array().of(yup.string()).min(3).max(5)
 })
 
 export const ProductCreateForm = (
@@ -34,17 +36,10 @@ export const ProductCreateForm = (
         photo: '',
         price: undefined,
         categoryId: undefined,
-        photos: [
-          'https://pyxis.nymag.com/v1/imgs/310/524/bfe62024411af0a9d9cd23447121704d7a-11-spongebob-squarepants.rsquare.w1200.jpg',
-          'https://pyxis.nymag.com/v1/imgs/310/524/bfe62024411af0a9d9cd23447121704d7a-11-spongebob-squarepants.rsquare.w1200.jpg',
-          'https://pyxis.nymag.com/v1/imgs/310/524/bfe62024411af0a9d9cd23447121704d7a-11-spongebob-squarepants.rsquare.w1200.jpg'
-        ]
+        photos: []
       }}
     >
       <TextInput name="name" label="Name" />
-      <TextAreaInput name="description" label="Description" />
-      <NumberInput name="price" label="Price" min={1} />
-      <PhotoInput name="photo" label="Photo" />
       <AutocompleteInput
         name="categoryId"
         label="Category"
@@ -56,6 +51,10 @@ export const ProductCreateForm = (
             .then(page => page.content)
         }
       />
+      <TextAreaInput name="description" label="Description" />
+      <NumberInput name="price" label="Price" min={1} />
+      <PhotoInput name="photo" label="Main photo" />
+      <GalleryInput name="photos" label="Gallery" />
       <SubmitButton />
     </Form>
   )
