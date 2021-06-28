@@ -23,6 +23,7 @@ export const ProductReviewTable = ({
   const reviewsQuery = useProductReviewPage(params)
   return (
     <SimpleTable
+      rowKey="id"
       {...props}
       loading={reviewsQuery.isLoading}
       dataSource={reviewsQuery.data?.content}
