@@ -1,10 +1,11 @@
-import { Pagination, Table } from 'antd'
 import React, { useState } from 'react'
-import dayjs from 'dayjs'
 import { useCustomerActions } from '../../services/customer-service'
 import { PageParams } from '../../types/dto'
 import { paginationAdapter } from '../../utils/pagination-adapter'
 import { AsyncList } from '../shared/async-list'
+import { SimpleTable } from '../shared/simple-table'
+import { formatDate } from '../../utils'
+import { tableOnChangeAdapter } from '../shared/crud/utils'
 
 export const CustomerActionList = () => {
   const [params, setParams] = useState<PageParams>({ page: 0, size: 10 })
@@ -14,40 +15,31 @@ export const CustomerActionList = () => {
       data={actionsQuery.data?.content}
       status={actionsQuery.status}
       render={actions => (
-        <div>
-          <Table
-            rowKey="id"
-            pagination={false}
-            dataSource={actions}
-            columns={[
-              {
-                title: 'Action',
-                key: 'actionType',
-                dataIndex: 'actionType'
-              },
-              {
-                title: 'Datetime',
-                key: 'createdAt',
-                dataIndex: 'createdAt',
-                render: (_, action) =>
-                  dayjs(action.createdAt).format('MMMM D, YYYY h:mm A')
-              }
-            ]}
-          />
-
-          <Pagination
-            {...paginationAdapter({
+        <SimpleTable
+          rowKey="id"
+          dataSource={actions}
+          onChange={tableOnChangeAdapter(params => {
+            setParams(p => ({ ...p, ...params }))
+          })}
+          pagination={{
+            ...paginationAdapter({
               pageSize: params.size,
               current: params.page,
-              total: actionsQuery.data?.totalElements,
-              onChange: page =>
-                setParams(params => ({
-                  ...params,
-                  page
-                }))
-            })}
-          />
-        </div>
+              total: actionsQuery.data?.totalElements
+            })
+          }}
+          columns={[
+            {
+              title: 'Action',
+              name: 'actionType'
+            },
+            {
+              title: 'Datetime',
+              name: 'createdAt',
+              render: formatDate
+            }
+          ]}
+        />
       )}
     />
   )
