@@ -34,7 +34,10 @@ export const useCategories = (options?: UseQueryOptions<CategoryDto[]>) =>
   useQuery(
     categoryQueryKeys.categories,
     async () => {
-      const page = await categoryService.fetchPage({ size: 100 })
+      const page = await categoryService.fetchPage({
+        size: 100,
+        sort: 'id,desc'
+      })
       return page.content
     },
     options

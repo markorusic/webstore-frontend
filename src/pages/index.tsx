@@ -10,7 +10,11 @@ export const Home = () => {
   const categoriesQuery = useCategories({
     select: data => data.slice(0, 4)
   })
-  const productsQuery = useProductPage({ page: 0, size: 4 })
+  const productsQuery = useProductPage({
+    page: 0,
+    size: 4,
+    sort: 'createdAt,desc'
+  })
   return (
     <PageContainer>
       <h1>{locale.home}</h1>
