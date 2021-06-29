@@ -25,6 +25,7 @@ export const OrderDetailsTable = (props: SimpleTableProps<OrderDetailDto>) => (
   <SimpleTable
     rowKey="id"
     {...props}
+    pagination={{ pageSize: 3 }}
     columns={[
       {
         title: 'Product',
