@@ -18,7 +18,7 @@ export const Products = () => {
   const categoriesQuery = useCategories()
   const productsPageQuery = useProductPage({
     page: 0,
-    size: 12,
+    size: 8,
     ...urlQuery.params
   })
 
