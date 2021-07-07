@@ -45,11 +45,9 @@ export class AuthService {
 
   private clearInterceptors = () => {
     if (this.requestInterceptorId) {
-      // console.log('req clear')
       this.httpClient.interceptors.request.eject(this.requestInterceptorId)
     }
     if (this.responseInterceptorId) {
-      // console.log('res clear')
       this.httpClient.interceptors.response.eject(this.responseInterceptorId)
     }
   }
@@ -57,10 +55,8 @@ export class AuthService {
   private setupInterceptors = () => {
     const user = this.getUser()
     if (user) {
-      // console.log('setup intercept', user.token)
       this.requestInterceptorId = this.httpClient.interceptors.request.use(
         request => {
-          // console.log('reqint', user.token)
           request.headers[env.API_TOKEN_HEADER] = user.token
           return request
         }
@@ -82,7 +78,6 @@ export class AuthService {
   }
 
   public login = (user: LoginResponseDto) => {
-    // console.log('login', user.token)
     this.setUser(user)
     this.clearInterceptors()
     this.setupInterceptors()
