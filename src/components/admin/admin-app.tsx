@@ -31,7 +31,7 @@ export const AdminApp = () => {
           </Route>
         </>
       ) : (
-        <Route exact path="/admin">
+        <Route exact path="/admin/**">
           <Login />
         </Route>
       )}
