@@ -67,7 +67,7 @@ export const Customers = () => {
               <CustomerUpdateForm {...props} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Action history" key="actions">
-              <CustomerActionTable />
+              <CustomerActionTable customerId={props.activeRecord.id} />
             </Tabs.TabPane>
           </Tabs>
         )}
