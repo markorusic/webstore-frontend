@@ -31,9 +31,14 @@ export const AdminApp = () => {
           </Route>
         </>
       ) : (
-        <Route exact path="/admin/**">
-          <Login />
-        </Route>
+        <>
+          <Route exact path="/admin">
+            <Login />
+          </Route>
+          <Route path="/admin/**">
+            <Login />
+          </Route>
+        </>
       )}
     </Switch>
   )
